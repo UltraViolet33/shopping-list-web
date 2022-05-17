@@ -10,14 +10,13 @@ class ProductController
 
     private string $msgErrors = "";
 
-
     /**
      * index
      *
      * @return Render
      */
     public function index(): Render
-    {   
+    {
         return Render::make("Products/index");
     }
 
@@ -27,42 +26,43 @@ class ProductController
      * @return Render
      */
     public function create(): Render
-    {   
-        if(!empty($_POST['createProduct']))
-        {
-            if(!empty($_POST['name']) && !empty($_POST['stockMin']) && !empty($_POST['stockActual']))
-            {
-                if(!is_numeric($_POST['stockMin']))
-                {
+    {
+        if (!empty($_POST['createProduct'])) {
+            if (!empty($_POST['name']) && !empty($_POST['stockMin']) && !empty($_POST['stockActual'])) {
+
+                $recurent = 0;
+
+                if (!is_numeric($_POST['stockMin'])) {
                     $this->setMsgErrors("Le stock minimale doit être un nombre ! <br>");
                 }
 
-                if(!is_numeric($_POST['stockActual']))
-                {
+                if (!is_numeric($_POST['stockActual'])) {
                     $this->setMsgErrors("Le stock actuel doit être un nombre ! <br>");
                 }
 
-                if(isset($_POST['recurent']))
-                {
-                    if($_POST['recurent'] !== "on")
-                    {
+                if (isset($_POST['recurent'])) {
+
+                    if ($_POST['recurent'] !== "on") {
                         $this->setMsgErrors("Mauvaise valeur pour 'Produit Récurent' <br>");
+                    } else {
+                        $recurent = 1;
                     }
                 }
-               
-                if(strlen($this->getMsgErrors()) === 0)
-                {
-        
-                 
+
+                if (strlen($this->getMsgErrors()) === 0) {
+                    $name = $_POST['name'];
+                    $stockMin = (int)$_POST['stockMin'];
+                    $stockActual = (int)$_POST['stockActual'];
+
+                    $check = Product::insert($name, $stockMin, $stockActual, $recurent);
+
+                    if ($check) {
+                        header("Location: /");
+                    }
                 }
-   
-            }
-            else
-            {
+            } else {
                 $this->setMsgErrors("Veuillez remplir tous les champs ! <br>");
             }
-           
-            
         }
 
         $errors = $this->getMsgErrors();
@@ -72,13 +72,23 @@ class ProductController
     }
 
 
-
-    private function setMsgErrors($msgError)
+    /**
+     * setMsgErrors
+     *
+     * @param  ?string $msgError
+     * @return void
+     */
+    private function setMsgErrors(?string $msgError): void
     {
         $this->msgErrors .= $msgError;
     }
 
-    private function getMsgErrors()
+    /**
+     * getMsgErrors
+     *
+     * @return string
+     */
+    private function getMsgErrors(): string
     {
         return $this->msgErrors;
     }
