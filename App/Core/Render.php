@@ -31,7 +31,10 @@ class Render
     {
         ob_start();
         extract($this->args);
+        require BASE_VIEW_PATH . 'layouts\header.php';
         require BASE_VIEW_PATH . $this->viewPath . '.php';
+        require BASE_VIEW_PATH . 'layouts\footer.php';
+
         return ob_get_clean();
     }
 
