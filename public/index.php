@@ -11,6 +11,10 @@ use App\Router\Router;
 $router = new Router();
 $router->get('/', ['App\Controllers\HomeController', 'index']);
 
+// Products
+$router->get('/product/create', ['App\Controllers\ProductController', 'create']);
+$router->post('/product/create', ['App\Controllers\ProductController', 'create']);
+
 (new App($router, ['method' => $_SERVER['REQUEST_METHOD'], 'uri'=>$_SERVER['REQUEST_URI']]))->run();
 
 ?>
