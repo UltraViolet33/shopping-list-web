@@ -1,3 +1,8 @@
+<?php
+
+use App\Core\Helpers\Session;
+Session::init();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 

@@ -3,7 +3,7 @@
 
 use App\Core\Helpers\Session;
 
- if (isset($msg)) : ?>
-    <?= $msg ?>
+ if (!is_null(Session::getMessage())) : ?>
+    <?php var_dump(Session::getMessage()) ?>
     <?php Session::unset('msg'); ?>
 <?php endif; ?>

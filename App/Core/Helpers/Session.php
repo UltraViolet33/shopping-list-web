@@ -12,7 +12,7 @@ class Session
      */
     public static function init(): void
     {
-        if (!isset($_SESSION)) {
+        if (empty(session_id())) {
             session_start();
         }
     }
@@ -54,6 +54,7 @@ class Session
     public static function setMessage(string $value): void
     {
         $_SESSION['msg'] = $value;
+        var_dump($_SESSION);
     }
 
     /**

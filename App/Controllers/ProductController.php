@@ -14,7 +14,7 @@ class ProductController
     public function __construct()
     {
         $this->msgErrors = "";
-        Session::init();
+        // Session::init();
     }
 
     /**
@@ -64,8 +64,12 @@ class ProductController
                     $check = Product::insert($name, $stockMin, $stockActual, $recurent);
 
                     if ($check) {
+                          Session::init();
                         Session::setMessage("Produit créé avec succès !");
-                        header("Location: /");
+                         header("Location: /");
+                      
+
+                        return null;
                     }
                 }
             } else {
