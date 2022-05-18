@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Core\Helpers\Session;
+
 class Render
 {
 
@@ -19,6 +21,7 @@ class Render
     {
         $this->viewPath = $viewPath;
         $this->args = $args;
+        $this->addMessageToArgs();
     }
 
 
@@ -34,7 +37,6 @@ class Render
         require BASE_VIEW_PATH . 'layouts\header.php';
         require BASE_VIEW_PATH . $this->viewPath . '.php';
         require BASE_VIEW_PATH . 'layouts\footer.php';
-
         return ob_get_clean();
     }
 
@@ -60,5 +62,19 @@ class Render
     public function __toString(): string
     {
         return $this->view();
+    }
+    
+    /**
+     * addMessageToArgs
+     *
+     * @return void
+     */
+    private function addMessageToArgs(): void
+    {
+        Session::init();
+        $msg = Session::getMessage();
+        if ($msg) {
+            $this->args['msg'] = $msg;
+        }
     }
 }

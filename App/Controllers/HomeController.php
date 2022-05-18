@@ -3,7 +3,6 @@
 namespace App\Controllers;
 
 use App\Core\Render;
-use App\Models\Product;
 
 class HomeController
 {
@@ -14,7 +13,6 @@ class HomeController
      */
     public function index(): Render
     {
-        $product = new Product();
         return Render::make("Home/index");
     }
 }

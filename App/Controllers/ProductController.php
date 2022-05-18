@@ -3,12 +3,19 @@
 namespace App\Controllers;
 
 use App\Core\Render;
+use App\Core\Helpers\Session;
 use App\Models\Product;
 
 class ProductController
 {
 
-    private string $msgErrors = "";
+    private string $msgErrors;
+
+    public function __construct()
+    {
+        $this->msgErrors = "";
+        Session::init();
+    }
 
     /**
      * index
@@ -57,6 +64,7 @@ class ProductController
                     $check = Product::insert($name, $stockMin, $stockActual, $recurent);
 
                     if ($check) {
+                        Session::setMessage("Produit créé avec succès !");
                         header("Location: /");
                     }
                 }
