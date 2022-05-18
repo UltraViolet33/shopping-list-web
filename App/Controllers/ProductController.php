@@ -101,4 +101,8 @@ class ProductController
     {
         return $this->msgErrors;
     }
+
+    private function updateStock()
+    {
+    }
 }
