@@ -8,18 +8,18 @@ use App\Core\Database\Database;
 class Product extends Model
 {
 
-    private int $id;
+    private int $id_product;
     private string $name;
-    private int $stockActual;
-    private int $stockMin;
+    private int $stock_actual;
+    private int $stock_min;
     private int $recurrent;
 
     /**
      * insert
      *
      * @param  string $name
-     * @param  int $stockMin
-     * @param  int $stockActual
+     * @param  int $stock_min
+     * @param  int $stock_actual
      * @param  int $recurent
      * @return bool
      */
@@ -35,5 +35,11 @@ class Product extends Model
         $data['recurent'] = $recurent;
 
         return Database::getInstance()->write($query, $data);
+    }
+
+    public function selectAll()
+    {
+        $query = "SELECT * FROM $this->table";
+        return $this->db->read($query);
     }
 }

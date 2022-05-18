@@ -6,7 +6,7 @@ use App\Core\Database\Database;
 
 class Model
 {
-    protected static Database $db;
+    protected  Database $db;
     protected string $table;
 
     /**
@@ -16,7 +16,7 @@ class Model
      */
     public function __construct()
     {
-        
+        $this->db = Database::getInstance();
         $this->table = get_class($this);
         $this->table = $this->getTableName();
     }

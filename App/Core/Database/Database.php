@@ -59,13 +59,17 @@ class Database
      * @param  int $method
      * @return bool|array
      */
-    public function read(string $query,  array $data = array(), int $method = PDO::FETCH_ASSOC): bool|array
+    public function read(string $query,  array $data = array(), int $method = PDO::FETCH_OBJ, $class = null): bool|array
     {
         $statement = $this->PDOInstance->prepare($query);
         $result = $statement->execute($data);
 
         if ($result) {
             $data = $statement->fetchAll($method);
+
+            if ($method === PDO::FETCH_CLASS) {
+                $data = $statement->fetchAll($method, $class);
+            }
             if (is_array($data) && count($data) > 0) {
                 return $data;
             }
