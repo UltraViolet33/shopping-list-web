@@ -7,7 +7,7 @@ use App\Core\App;
 use App\Router\Router;
 
 $router = new Router();
-$router->get('/', ['App\Controllers\HomeController', 'index']);
+$router->get('/', ['App\Controllers\ProductController', 'index']);
 
 // Products
 $router->get('/product/create', ['App\Controllers\ProductController', 'create']);

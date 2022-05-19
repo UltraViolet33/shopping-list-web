@@ -42,4 +42,14 @@ class Product extends Model
         $query = "SELECT * FROM $this->table";
         return $this->db->read($query);
     }
+
+
+    public function updateStock(int $id, int $stock): bool
+    {
+        $query = "UPDATE products SET stock_actual = :stock WHERE id_products = :id";
+        $data['id'] = $id;
+        $data['stock'] = $stock;
+
+        return $this->db->write($query, $data);
+    }
 }

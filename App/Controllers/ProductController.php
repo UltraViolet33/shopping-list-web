@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Render;
 use App\Core\Helpers\Session;
 use App\Models\Product;
+use PhpParser\Node\Expr\PreDec;
 
 class ProductController
 {
@@ -23,7 +24,10 @@ class ProductController
      */
     public function index(): Render
     {
-        return Render::make("Products/index");
+        $product = new Product();
+        $products = $product->selectAll();
+        $productsHTML = $this->displayTableProducts($products);
+        return Render::make("Products/index", compact('productsHTML'));
     }
 
     /**
@@ -102,7 +106,69 @@ class ProductController
         return $this->msgErrors;
     }
 
-    private function updateStock()
+    /**
+     * updateStock
+     *
+     * @return string
+     */
+    public function updateStock(): string
     {
+        // header('Access-Control-Allow-Origin: *');
+        // header('Content-Type: application/json');
+        // header('Access-Control-Allow-Methods: POST');
+        // header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-requested-With');
+
+        $test = ['msg' => 'ok'];
+        $data = file_get_contents("php://input");
+        $data = json_decode($data);
+
+        if (!is_object($data)) {
+            $test = ['msg' => 'error'];
+            return json_encode($test);
+        }
+
+        if (!$data->type === "updateStock" || !is_int($data->idProduct) || !is_int($data->value)) {
+            $test = ['msg' => 'error'];
+            return json_encode($test);
+        }
+
+        $idProduct = $data->idProduct;
+        $stock = $data->value;
+
+        $productModel = new Product();
+        if (!$productModel->updateStock($idProduct, $stock)) {
+        }
+
+        $product = new Product();
+        $products = $product->selectAll();
+        $productsHTML = $this->displayTableProducts($products);
+        $message = ["result" => "OK", "products" => $productsHTML];
+        return json_encode($message);
+    }
+
+
+    private function displayTableProducts($products): string
+    {
+
+        $html = "";
+
+        foreach ($products as $product) {
+            $class = "";
+            if ($product->stock_actual <= $product->stock_min) {
+                $class = "bg-danger";
+            }
+
+            $html .= '<tr>
+            <td>' . $product->name . ' </td>
+            <td idProduct="' . $product->id_products . '" class="' . $class . '"><button stock="' . $product->stock_actual . '"  type="button" class="btn btn-warning" onclick="updateStock(this)" id="subStockBtn">-</button>
+                ' . $product->stock_actual . '
+                <button type="button" stock="' . $product->stock_actual . '" class="btn btn-primary addStockBtn" onclick="updateStock(this)" class="addStockBtn">+</button>
+            </td>
+            <td>' . $product->stock_min . '</td>
+            <td><button type="button" class="btn btn-secondary">Détails</button></td>
+        </tr>';
+        }
+
+        return $html;
     }
 }
