@@ -30,20 +30,20 @@ class Product extends Model
 
         return Database::getInstance()->write($query, $data);
     }
-    
-    
+
+
     /**
      * selectAll
      *
-     * @return bool
+     * @return array
      */
-    public function selectAll(): bool
+    public function selectAll(): array
     {
         $query = "SELECT * FROM $this->table";
         return $this->db->read($query);
     }
 
-    
+
     /**
      * updateStock
      *
@@ -58,5 +58,17 @@ class Product extends Model
         $data['stock'] = $stock;
 
         return $this->db->write($query, $data);
+    }
+
+
+    /**
+     * selectListProducts
+     *
+     * @return array
+     */
+    public function selectListProducts(): array
+    {
+        $query = "SELECT * FROM $this->table WHERE stock_actual <= stock_min";
+        return $this->db->read($query);
     }
 }

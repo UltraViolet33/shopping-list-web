@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\Helpers\Session;
+
 Session::init();
 ?>
 <!DOCTYPE html>
@@ -17,7 +18,7 @@ Session::init();
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
         <div class="container-fluid ">
-            <a href="post" class="navbar-brand text-white">Shopping List App</a>
+            <a href="" class="navbar-brand text-white">Shopping List App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,6 +29,9 @@ Session::init();
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/product/create">Ajouter Produit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/list">Liste de courses</a>
                     </li>
                 </ul>
             </div>

@@ -7,13 +7,14 @@ use App\Core\App;
 use App\Router\Router;
 
 $router = new Router();
-$router->get('/', ['App\Controllers\ProductController', 'index']);
 
 // Products
+$router->get('/', ['App\Controllers\ProductController', 'index']);
 $router->get('/product/create', ['App\Controllers\ProductController', 'create']);
 $router->post('/product/create', ['App\Controllers\ProductController', 'create']);
 $router->post("/product/updatestock", ['App\Controllers\ProductController', 'updateStock']);
 
-(new App($router, ['method' => $_SERVER['REQUEST_METHOD'], 'uri'=>$_SERVER['REQUEST_URI']]))->run();
+// List
+$router->get("/list", ['App\Controllers\ListController', 'index']);
 
-?>
+(new App($router, ['method' => $_SERVER['REQUEST_METHOD'], 'uri'=>$_SERVER['REQUEST_URI']]))->run();
