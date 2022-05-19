@@ -8,12 +8,6 @@ use App\Core\Database\Database;
 class Product extends Model
 {
 
-    private int $id_product;
-    private string $name;
-    private int $stock_actual;
-    private int $stock_min;
-    private int $recurrent;
-
     /**
      * insert
      *
@@ -36,14 +30,27 @@ class Product extends Model
 
         return Database::getInstance()->write($query, $data);
     }
-
-    public function selectAll()
+    
+    
+    /**
+     * selectAll
+     *
+     * @return bool
+     */
+    public function selectAll(): bool
     {
         $query = "SELECT * FROM $this->table";
         return $this->db->read($query);
     }
 
-
+    
+    /**
+     * updateStock
+     *
+     * @param  mixed $id
+     * @param  mixed $stock
+     * @return bool
+     */
     public function updateStock(int $id, int $stock): bool
     {
         $query = "UPDATE products SET stock_actual = :stock WHERE id_products = :id";

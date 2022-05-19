@@ -13,6 +13,7 @@ class Database
     private ?PDO $PDOInstance = null;
     private static ?self $instance = null;
 
+
     /**
      * __construct
      *
@@ -95,6 +96,7 @@ class Database
         }
         return false;
     }
+    
 
     /**
      * getLastInsertId

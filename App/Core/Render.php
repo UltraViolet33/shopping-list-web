@@ -64,6 +64,7 @@ class Render
         return $this->view();
     }
     
+    
     /**
      * addMessageToArgs
      *

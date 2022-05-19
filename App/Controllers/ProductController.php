@@ -5,17 +5,22 @@ namespace App\Controllers;
 use App\Core\Render;
 use App\Core\Helpers\Session;
 use App\Models\Product;
-use PhpParser\Node\Expr\PreDec;
 
 class ProductController
 {
 
     private string $msgErrors;
 
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->msgErrors = "";
     }
+
 
     /**
      * index
@@ -24,11 +29,10 @@ class ProductController
      */
     public function index(): Render
     {
-        $product = new Product();
-        $products = $product->selectAll();
-        $productsHTML = $this->displayTableProducts($products);
+        $productsHTML = $this->displayTableProducts();
         return Render::make("Products/index", compact('productsHTML'));
     }
+
 
     /**
      * index
@@ -113,11 +117,6 @@ class ProductController
      */
     public function updateStock(): string
     {
-        // header('Access-Control-Allow-Origin: *');
-        // header('Content-Type: application/json');
-        // header('Access-Control-Allow-Methods: POST');
-        // header('Access-Control-Allow-Headers: Access-Control-Allow-Headers, Content-Type, Access-Control-Allow-Methods, Authorization, X-requested-With');
-
         $test = ['msg' => 'ok'];
         $data = file_get_contents("php://input");
         $data = json_decode($data);
@@ -139,16 +138,21 @@ class ProductController
         if (!$productModel->updateStock($idProduct, $stock)) {
         }
 
-        $product = new Product();
-        $products = $product->selectAll();
-        $productsHTML = $this->displayTableProducts($products);
+        $productsHTML = $this->displayTableProducts();
         $message = ["result" => "OK", "products" => $productsHTML];
         return json_encode($message);
     }
 
 
-    private function displayTableProducts($products): string
+    /**
+     * displayTableProducts
+     *
+     * @return string
+     */
+    private function displayTableProducts(): string
     {
+        $product = new Product();
+        $products = $product->selectAll();
 
         $html = "";
 

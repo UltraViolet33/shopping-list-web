@@ -33,6 +33,7 @@ class Router
         $this->register($path, $action, 'GET');
     }
 
+
     /**
      * post
      *
@@ -44,6 +45,7 @@ class Router
     {
         $this->register($path, $action, 'POST');
     }
+
 
     /**
      * resolve
@@ -60,7 +62,7 @@ class Router
         if (is_callable($action)) {
             return $action();
         }
-        
+
         if (is_array($action)) {
 
             [$class, $classMethod] = $action;
@@ -71,6 +73,7 @@ class Router
             }
         }
     }
+
 
     /**
      * getRoutes

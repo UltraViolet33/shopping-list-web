@@ -30,6 +30,7 @@ class Session
         $_SESSION[$key] = $value;
     }
 
+
     /**
      * get
      *
@@ -45,6 +46,7 @@ class Session
         return false;
     }
 
+
     /**
      * setMessage
      *
@@ -57,6 +59,7 @@ class Session
         var_dump($_SESSION);
     }
 
+
     /**
      * getMessage
      *
@@ -67,6 +70,7 @@ class Session
         $msg = self::get('msg');
         return $msg;
     }
+    
 
     /**
      * unset
