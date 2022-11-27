@@ -8,7 +8,6 @@ use App\Models\Product;
 
 class ProductController
 {
-
     private string $msgErrors;
 
     /**
@@ -43,7 +42,6 @@ class ProductController
     {
         if (!empty($_POST['createProduct'])) {
             if (!empty($_POST['name']) && !empty($_POST['stockMin']) && !empty($_POST['stockActual'])) {
-
                 $recurent = 0;
 
                 if (!is_numeric($_POST['stockMin'])) {
@@ -55,7 +53,6 @@ class ProductController
                 }
 
                 if (isset($_POST['recurent'])) {
-
                     if ($_POST['recurent'] !== "on") {
                         $this->setMsgErrors("Mauvaise valeur pour 'Produit Récurent' <br>");
                     } else {
@@ -144,6 +141,56 @@ class ProductController
     }
 
 
+    public function update()
+    {
+        if (!isset($_GET['id'])) {
+            return '404';
+        }
+
+
+        if (!empty($_POST['editProduct'])) {
+            if ($this->checkPostValues()) {
+                echo "test";
+
+                $idProduct = $_GET['id'];
+                $recurent = 0;
+                $name = $_POST['name'];
+                $stockMin = (int)$_POST['stockMin'];
+                $stockActual = (int)$_POST['stockActual'];
+
+                if (isset($_POST['recurent'])) {
+                    if ($_POST['recurent'] == "on") {
+                        $recurent = 1;
+                    }
+                }
+
+
+
+                $check = Product::update($idProduct, $name, $stockMin, $stockActual, $recurent);
+
+
+                if ($check) {
+                    Session::init();
+                    Session::setMessage("Produit modifié avec succès !");
+                    header("Location: /");
+                    return null;
+                }
+            }
+
+            var_dump($this->msgErrors);
+        }
+
+        $idProduct = (int)$_GET['id'];
+
+        $productModel = new Product();
+        $singleProduct = $productModel->getSingleProduct($idProduct);
+
+        $errors = $this->getMsgErrors();
+        $this->setMsgErrors(null);
+        return Render::make("Products/edit", compact('singleProduct', "errors"));
+    }
+
+
     /**
      * displayTableProducts
      *
@@ -169,10 +216,39 @@ class ProductController
                 <button type="button" stock="' . $product->stock_actual . '" class="btn btn-primary addStockBtn" onclick="updateStock(this)" class="addStockBtn">+</button>
             </td>
             <td>' . $product->stock_min . '</td>
-            <td><button type="button" class="btn btn-secondary">Détails</button></td>
+            <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Détails</a></button></td>
         </tr>';
         }
 
         return $html;
+    }
+
+
+
+    public function checkPostValues()
+    {
+        if (!empty($_POST['name']) && !empty($_POST['stockMin']) && !empty($_POST['stockActual'])) {
+            if (!is_numeric($_POST['stockMin'])) {
+                $this->setMsgErrors("Le stock minimale doit être un nombre ! <br>");
+                return false;
+            }
+
+            if (!is_numeric($_POST['stockActual'])) {
+                $this->setMsgErrors("Le stock actuel doit être un nombre ! <br>");
+                return false;
+            }
+
+            if (isset($_POST['recurent'])) {
+                if ($_POST['recurent'] !== "on") {
+                    $this->setMsgErrors("Mauvaise valeur pour 'Produit Récurent' <br>");
+                    return false;
+                }
+            }
+
+            return true;
+        } else {
+            $this->setMsgErrors("Veuillez remplir tous les champs ! <br>");
+            return false;
+        }
     }
 }

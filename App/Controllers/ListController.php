@@ -15,17 +15,18 @@ class ListController
      */
     public function index(): Render
     {
-        $productsHTML = $this->displayTableProducts();
-        return Render::make("List/index", compact('productsHTML'));
+        $products[] =   $this->displayTableProducts()[0];
+        $products[] = $this->displayTableProducts()[1];
+        return Render::make("List/index", compact('products'));
     }
 
 
     /**
      * displayTableProducts
      *
-     * @return string
+     * @return array
      */
-    private function displayTableProducts(): string
+    private function displayTableProducts(): array
     {
         $productModel = new Product();
         $productList = $productModel->selectListProducts();
@@ -49,6 +50,7 @@ class ListController
                     </tr>';
         }
 
-        return $html;
+        $countProducts = count($productList);
+        return [$html, $countProducts];
     }
 }

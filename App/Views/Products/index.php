@@ -3,6 +3,7 @@
 use App\Core\Helpers\Session;
 
 if (!is_null(Session::getMessage())) : ?>
+<?php echo Session::getMessage(); ?>
     <?php Session::unset('msg'); ?>
 <?php endif; ?>
 <div class="container">
@@ -19,7 +20,7 @@ if (!is_null(Session::getMessage())) : ?>
                         <th scope="col">Name</th>
                         <th scope="col">Actuel</th>
                         <th scope="col">Min</th>
-                        <th scope="col">Détails</th>
+                        <th scope="col">Modifier</th>
                     </tr>
                 </thead>
                 <tbody id="tableProducts">

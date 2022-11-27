@@ -4,7 +4,6 @@ namespace App\Router;
 
 class Router
 {
-
     private array $routes = [];
 
 
@@ -57,18 +56,25 @@ class Router
     public function resolve(string $method, string $uri): string
     {
         $path = explode('?', $uri)[0];
+
+
+
+
+
+
         $action = $this->routes[$method][$path] ?? null;
+        var_dump($path);
+
 
         if (is_callable($action)) {
             return $action();
         }
 
         if (is_array($action)) {
-
             [$class, $classMethod] = $action;
 
             if (class_exists($class) && method_exists($class, $classMethod)) {
-                $controller = new $class;
+                $controller = new $class();
                 return call_user_func_array([$controller, $classMethod], []);
             }
         }

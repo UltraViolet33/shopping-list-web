@@ -16,7 +16,7 @@ function updateStock(element) {
     idProduct: idProduct,
     value: newStock,
   };
-  postData(data, "http://shopping-list.test/product/updatestock");
+  postData(data, "/product/updatestock");
 }
 
 const postData = (data, path) => {

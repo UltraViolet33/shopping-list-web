@@ -18,7 +18,7 @@ Session::init();
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
         <div class="container-fluid ">
-            <a href="" class="navbar-brand text-white">Shopping List App</a>
+            <a href="/" class="navbar-brand text-white">Shopping List App</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

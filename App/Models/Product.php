@@ -4,10 +4,8 @@ namespace App\Models;
 
 use App\Core\Database\Database;
 
-
 class Product extends Model
 {
-
     /**
      * insert
      *
@@ -27,6 +25,20 @@ class Product extends Model
         $data['stock_min'] = $stockMin;
         $data['stock_actual'] = $stockActual;
         $data['recurent'] = $recurent;
+
+        return Database::getInstance()->write($query, $data);
+    }
+
+    public static function update(int $idProduct, string $name, int $stockMin, int $stockActual, int $recurent): bool
+    {
+        $query = "UPDATE products SET name = :name, stock_min = :stock_min, stock_actual = :stock_actual, recurrent = :recurrent WHERE id_products = :id_products";
+
+        $data = [];
+        $data['id_products'] = $idProduct;
+        $data['name'] = $name;
+        $data['stock_min'] = $stockMin;
+        $data['stock_actual'] = $stockActual;
+        $data['recurrent'] = $recurent;
 
         return Database::getInstance()->write($query, $data);
     }
@@ -68,7 +80,19 @@ class Product extends Model
      */
     public function selectListProducts(): array
     {
-        $query = "SELECT * FROM $this->table WHERE stock_actual <= stock_min";
+        $query = "SELECT *  FROM $this->table WHERE stock_actual <= stock_min";
         return $this->db->read($query);
+    }
+
+    /**
+     * getSingleProduct
+     *
+     * @param  int $idProduct
+     * @return object
+     */
+    public function getSingleProduct(int $idProduct): object
+    {
+        $query = "SELECT *  FROM $this->table WHERE id_products = :id_product";
+        return $this->db->read($query, ['id_product' => $idProduct])[0];
     }
 }
