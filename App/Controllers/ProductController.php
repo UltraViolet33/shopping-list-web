@@ -97,6 +97,7 @@ class ProductController
         $this->msgErrors .= $msgError;
     }
 
+
     /**
      * getMsgErrors
      *
@@ -106,6 +107,7 @@ class ProductController
     {
         return $this->msgErrors;
     }
+    
 
     /**
      * updateStock

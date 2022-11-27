@@ -63,8 +63,8 @@ class Render
     {
         return $this->view();
     }
-    
-    
+
+
     /**
      * addMessageToArgs
      *
@@ -72,7 +72,7 @@ class Render
      */
     private function addMessageToArgs(): void
     {
-         Session::init();
+        Session::init();
         $msg = Session::getMessage();
         if ($msg) {
             $this->args['msg'] = $msg;
