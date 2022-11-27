@@ -41,7 +41,9 @@ class ProductController
     public function create(): Render
     {
         if (!empty($_POST['createProduct'])) {
+
             if (!empty($_POST['name']) && !empty($_POST['stockMin']) && !empty($_POST['stockActual'])) {
+            
                 $recurent = 0;
 
                 if (!is_numeric($_POST['stockMin'])) {
@@ -81,7 +83,6 @@ class ProductController
 
         $errors = $this->getMsgErrors();
         $this->setMsgErrors(null);
-
         return Render::make("Products/add", compact('errors'));
     }
 
@@ -107,7 +108,7 @@ class ProductController
     {
         return $this->msgErrors;
     }
-    
+
 
     /**
      * updateStock
@@ -195,7 +196,7 @@ class ProductController
 
     /**
      * displayTableProducts
-     *
+     * create the html table
      * @return string
      */
     private function displayTableProducts(): string
@@ -218,7 +219,7 @@ class ProductController
                 <button type="button" stock="' . $product->stock_actual . '" class="btn btn-primary addStockBtn" onclick="updateStock(this)" class="addStockBtn">+</button>
             </td>
             <td>' . $product->stock_min . '</td>
-            <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Détails</a></button></td>
+            <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Editer</a></button></td>
         </tr>';
         }
 

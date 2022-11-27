@@ -3,10 +3,10 @@
 use App\Core\Helpers\Session;
 
 if (!is_null(Session::getMessage())) : ?>
-<?php echo Session::getMessage(); ?>
+    <?php echo Session::getMessage(); ?>
     <?php Session::unset('msg'); ?>
 <?php endif; ?>
-<div class="container">
+<div class="container my-3">
     <div class="row">
         <div class="col-12">
             <h1 class="text-center">Tous les produits</h1>
@@ -17,9 +17,9 @@ if (!is_null(Session::getMessage())) : ?>
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Actuel</th>
-                        <th scope="col">Min</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Stock Actuel</th>
+                        <th scope="col">Stock Min</th>
                         <th scope="col">Modifier</th>
                     </tr>
                 </thead>
@@ -32,5 +32,4 @@ if (!is_null(Session::getMessage())) : ?>
         </div>
     </div>
 </div>
-
 <script src="assets/js/updateStock.js"></script>

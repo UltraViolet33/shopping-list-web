@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container my-3">
     <div class="row">
         <div class="col-12">
             <h1 class="text-center">Modifier un produit</h1>
@@ -19,14 +19,16 @@
                     <label for="stockActual" class="form-label">Stock Actuel : </label>
                     <input type="number" class="form-control" name="stockActual" <?= isset($singleProduct) ? 'value="' . htmlspecialChars($singleProduct->stock_actual) . '"' : '' ?>>
                 </div>
-                <div class="btn-group mb-3" role="group" aria-label="Basic checkbox toggle button group">
-                    <?php if($singleProduct->recurrent): ?>
-                    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" name="recurent" checked>
-                    <?php else: ?>
-                    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" name="recurent">
-
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="recurent" value="on" name="recurent">
+                    <?php if ($singleProduct->recurrent) : ?>
+                        <input class="form-check-input" type="checkbox" id="recurent" value="on" name="recurent" checked>
+                    <?php else : ?>
+                        <input class="form-check-input" type="checkbox" id="recurent" value="on" name="recurent">
                     <?php endif ?>
-                    <label class="btn btn-outline-primary" for="btncheck1">Produit Récurrent</label>
+                    <label class="form-check-label" for="recurent">
+                        Recurrent
+                    </label>
                 </div>
                 <div>
                     <input type="submit" class="btn btn-primary" name="editProduct" value="Valider">
