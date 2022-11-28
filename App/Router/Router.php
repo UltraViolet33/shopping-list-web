@@ -52,9 +52,9 @@ class Router
      *
      * @param  string $method
      * @param  string $uri
-     * @return string
+     * @return 
      */
-    public function resolve(string $method, string $uri): string
+    public function resolve(string $method, string $uri)
     {
         $path = explode('?', $uri)[0];
         $action = $this->routes[$method][$path] ?? null;

@@ -144,6 +144,25 @@ class ProductController
     }
 
 
+    public function delete()
+    {
+
+        if (!isset($_POST['id_product']) || !is_numeric($_POST['id_product'])) {
+            header("Location: /");
+            return null;
+        }
+
+        $productModel = new Product();
+
+        $productModel->deleteProduct($_POST['id_product']);
+
+        //remove product
+
+        header("Location: /");
+        return null;
+    }
+
+
     public function update()
     {
         if (!isset($_GET['id'])) {
@@ -205,6 +224,7 @@ class ProductController
         $products = $product->selectAll();
 
         $html = "";
+        $confirm = "Are you sure ?";
 
         foreach ($products as $product) {
             $class = "";
@@ -220,7 +240,12 @@ class ProductController
             </td>
             <td>' . $product->stock_min . '</td>
             <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Editer</a></button></td>
-            <td><button type="button" class="btn btn-danger"><a style="color:white; text-decoration:none" href="/product/delete?id=' . $product->id_products . '">Supprimer</a></button></td>
+            <td>
+            <form method="POST" action="/product/delete" onsubmit="return confirm();">
+            <input type="hidden" name="id_product" value="'.$product->id_products.'">
+            <button type="submit" class="btn btn-danger"><a style="color:white; text-decoration:none">Supprimer</a></button>
+            </form>
+            </td>
             </tr>';
         }
 
