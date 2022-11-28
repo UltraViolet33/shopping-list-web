@@ -43,7 +43,7 @@ class ProductController
         if (!empty($_POST['createProduct'])) {
 
             if (!empty($_POST['name']) && !empty($_POST['stockMin']) && !empty($_POST['stockActual'])) {
-            
+
                 $recurent = 0;
 
                 if (!is_numeric($_POST['stockMin'])) {
@@ -220,7 +220,8 @@ class ProductController
             </td>
             <td>' . $product->stock_min . '</td>
             <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Editer</a></button></td>
-        </tr>';
+            <td><button type="button" class="btn btn-danger"><a style="color:white; text-decoration:none" href="/product/delete?id=' . $product->id_products . '">Supprimer</a></button></td>
+            </tr>';
         }
 
         return $html;

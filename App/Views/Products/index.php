@@ -21,6 +21,7 @@ if (!is_null(Session::getMessage())) : ?>
                         <th scope="col">Stock Actuel</th>
                         <th scope="col">Stock Min</th>
                         <th scope="col">Modifier</th>
+                        <th scope="col">Supprimer</th>
                     </tr>
                 </thead>
                 <tbody id="tableProducts">
