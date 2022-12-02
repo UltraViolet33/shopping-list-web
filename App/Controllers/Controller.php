@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Controllers;
+use App\Core\Render;
 
-class Controller
+abstract class Controller
 {
 
     protected string $msgErrors;
+
+    abstract protected function update(): Render;
 
 
     /**

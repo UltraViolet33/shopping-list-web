@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Core\Database\Database;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class Product extends Model
 {
@@ -35,17 +36,16 @@ class Product extends Model
         return Database::getInstance()->write($query, $data);
     }
 
-    public static function update(int $idProduct, string $name, int $stockMin, int $stockActual, int $recurent): bool
+    /**
+     * update
+     *
+     * @param  array $data
+     * @return bool
+     */
+    public function update(array $data): bool
     {
-        $query = "UPDATE products SET name = :name, stock_min = :stock_min, stock_actual = :stock_actual, recurrent = :recurrent WHERE id_products = :id_products";
-
-        $data = [];
-        $data['id_products'] = $idProduct;
-        $data['name'] = $name;
-        $data['stock_min'] = $stockMin;
-        $data['stock_actual'] = $stockActual;
-        $data['recurrent'] = $recurent;
-
+        $query = "UPDATE products SET name = :name, stock_min = :stock_min, stock_actual = :stock_actual, recurrent = :recurrent
+        WHERE id_products = :id_products";
         return Database::getInstance()->write($query, $data);
     }
 
@@ -101,7 +101,7 @@ class Product extends Model
         $query = "SELECT *  FROM $this->table WHERE id_products = :id_product";
         return $this->db->read($query, ['id_product' => $idProduct])[0];
     }
-    
+
     /**
      * deleteProduct
      *
@@ -112,5 +112,17 @@ class Product extends Model
     {
         $query = "DELETE FROM $this->table WHERE id_products = :id_product";
         return $this->db->write($query, ['id_product' => $id]);
+    }
+
+    /**
+     * selectOneById
+     *
+     * @param  int $id
+     * @return object
+     */
+    public function selectOneById(int $id): object
+    {
+        $query = "SELECT *  FROM $this->table WHERE id_products = :id_products";
+        return $this->db->readOneRow($query, ['id_products' => $id]);
     }
 }

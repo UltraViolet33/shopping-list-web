@@ -129,7 +129,7 @@ class ProductController extends Controller
     }
 
 
-    public function update()
+    public function update(): Render
     {
         if (!isset($_GET['id'])) {
             return '404';
@@ -138,26 +138,22 @@ class ProductController extends Controller
 
         if (!empty($_POST['editProduct'])) {
             if ($this->checkPostValues()) {
-                echo "test";
 
-                $idProduct = $_GET['id'];
-                $recurent = 0;
-                $name = $_POST['name'];
-                $stockMin = (int)$_POST['stockMin'];
-                $stockActual = (int)$_POST['stockActual'];
+                $data = [];
+                $data['id_products'] = $_GET["id"];
+                $data['name'] = $_POST["name"];
+
+                $data['stock_min'] = (int)$_POST["stockMin"];
+                $data['stock_actual'] = (int)$_POST["stockActual"];
+                $data['recurrent'] = 0;
 
                 if (isset($_POST['recurent'])) {
                     if ($_POST['recurent'] == "on") {
-                        $recurent = 1;
+                        $data['recurrent'] = 1;
                     }
                 }
 
-
-
-                $check = Product::update($idProduct, $name, $stockMin, $stockActual, $recurent);
-
-
-                if ($check) {
+                if ((new Product())->update($data)) {
                     Session::init();
                     Session::setMessage("Produit modifié avec succès !");
                     header("Location: /");

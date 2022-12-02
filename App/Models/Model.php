@@ -34,6 +34,10 @@ abstract class Model
     }
 
     abstract protected function create(array $data): bool;
-    
+
+    abstract protected function update(array $data): bool;
+
     abstract protected function selectAll(): array;
+
+    abstract protected function selectOneById(int $id): object;
 }

@@ -26,5 +26,9 @@ $router->get("/list", ["App\Controllers\ListController", "index"]);
 $router->get("/stores", ["App\Controllers\StoreController", "index"]);
 $router->get("/stores/add", ["App\Controllers\StoreController", "create"]);
 $router->post("/stores/add", ["App\Controllers\StoreController", "create"]);
+$router->get("/stores/edit", ["App\Controllers\StoreController", "update"]);
+$router->post("/stores/edit", ["App\Controllers\StoreController", "update"]);
+
+
 
 (new App($router, ["method" => $_SERVER["REQUEST_METHOD"], "uri" => $_SERVER["REQUEST_URI"]]))->run();

@@ -80,6 +80,25 @@ class Database
 
 
     /**
+     * readOneRow
+     *
+     * @param  string $query
+     * @param  array $data
+     * @return object
+     */
+    public function readOneRow(string $query, array $data = []): object
+    {
+        $statement = $this->PDOInstance->prepare($query);
+        $result = $statement->execute($data);
+
+        if ($result) {
+            return $statement->fetch(PDO::FETCH_OBJ);
+        }
+
+        return false;
+    }
+
+    /**
      * write
      *
      * @param  string $query
@@ -96,7 +115,7 @@ class Database
         }
         return false;
     }
-    
+
 
     /**
      * getLastInsertId

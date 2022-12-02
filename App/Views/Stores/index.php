@@ -5,8 +5,8 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <div class="col-10 col-md-10">
-            <table class="table">
+        <div class="col-12">
+            <table class="table table-dark table-hover">
                 <thead>
                     <tr>
                         <th scope="col">Nom</th>
@@ -18,8 +18,8 @@
                     <?php foreach ($allStores as $store) : ?>
                         <tr>
                             <td><?= $store->name ?></td>
-                            <td><a href="">Modifier</a></td>
-                            <td><a href="">Supprimer</a></td>
+                            <td><a href="/stores/edit?id=<?= $store->id_stores ?>">Modifier</a></td>
+                            <td><a >Supprimer</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
