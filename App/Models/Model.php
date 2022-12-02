@@ -33,5 +33,7 @@ abstract class Model
         return $table;
     }
 
-    abstract protected function create(array $data): bool; 
+    abstract protected function create(array $data): bool;
+    
+    abstract protected function selectAll(): array;
 }

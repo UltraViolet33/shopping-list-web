@@ -18,4 +18,16 @@ class Store extends Model
         $query = "INSERT INTO $this->table(name) VALUES(:name)";
         return Database::getInstance()->write($query, $data);
     }
+    
+    
+    /**
+     * selectAll
+     *
+     * @return array
+     */
+    public function selectAll(): array
+    {
+        $query = "SELECT * FROM $this->table";
+        return Database::getInstance()->read($query);
+    }
 }

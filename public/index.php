@@ -23,6 +23,7 @@ $router->get("/list", ["App\Controllers\ListController", "index"]);
 
 
 // Stores
+$router->get("/stores", ["App\Controllers\StoreController", "index"]);
 $router->get("/stores/add", ["App\Controllers\StoreController", "create"]);
 $router->post("/stores/add", ["App\Controllers\StoreController", "create"]);
 

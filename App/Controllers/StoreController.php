@@ -9,6 +9,18 @@ use App\Models\Store;
 
 class StoreController extends Controller
 {
+    
+    /**
+     * index
+     *
+     * @return Render
+     */
+    public function index()
+    {
+        $allStores = (new Store())->selectAll();
+        return Render::make("Stores/index", compact('allStores'));
+    }
+    
 
     /**
      * index
@@ -23,7 +35,7 @@ class StoreController extends Controller
                 if ((new Store)->create($data)) {
                     Session::init();
                     Session::setMessage("Magasin créé avec succès !");
-                    header("Location: /stores/index");
+                    header("Location: /stores");
                     return null;
                 }
 
@@ -35,8 +47,6 @@ class StoreController extends Controller
 
         $errors = $this->getMsgErrors();
         $this->setMsgErrors(null);
-
-
         return Render::make("Stores/add", compact("errors"));
     }
 }
