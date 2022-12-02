@@ -31,6 +31,7 @@ class Store extends Model
         return Database::getInstance()->read($query);
     }
 
+    
     /**
      * selectOneById
      *
@@ -43,7 +44,7 @@ class Store extends Model
         return Database::getInstance()->readOneRow($query, ["id_stores" => $id]);
     }
 
-    
+
     /**
      * update
      *

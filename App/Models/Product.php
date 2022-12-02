@@ -8,33 +8,20 @@ use PhpParser\Node\Expr\Cast\Object_;
 class Product extends Model
 {
 
-    public function create(array $data): bool
-    {
-        return true;
-    }
-
     /**
-     * insert
+     * create
      *
-     * @param  string $name
-     * @param  int $stock_min
-     * @param  int $stock_actual
-     * @param  int $recurent
+     * @param  array $data
      * @return bool
      */
-    public static function insert(string $name, int $stockMin, int $stockActual, int $recurent): bool
+    public function create(array $data): bool
     {
         $query = "INSERT INTO products(name, stock_min, stock_actual, recurrent) 
-                VALUES(:name, :stock_min, :stock_actual, :recurent)";
-
-        $data = [];
-        $data['name'] = $name;
-        $data['stock_min'] = $stockMin;
-        $data['stock_actual'] = $stockActual;
-        $data['recurent'] = $recurent;
+        VALUES(:name, :stock_min, :stock_actual, :recurent)";
 
         return Database::getInstance()->write($query, $data);
     }
+
 
     /**
      * update

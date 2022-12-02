@@ -51,13 +51,14 @@ class ProductController extends Controller
                 }
 
                 if (strlen($this->getMsgErrors()) === 0) {
-                    $name = $_POST['name'];
-                    $stockMin = (int)$_POST['stockMin'];
-                    $stockActual = (int)$_POST['stockActual'];
+                    $data = [];
 
-                    $check = Product::insert($name, $stockMin, $stockActual, $recurent);
+                    $data["name"] = $_POST["name"];
+                    $data['stock_min'] = (int)$_POST['stockMin'];
+                    $data['stock_actual'] = (int)$_POST['stockActual'];
+                    $data['recurent'] = $recurent;
 
-                    if ($check) {
+                    if ((new Product())->create($data)) {
                         Session::init();
                         Session::setMessage("Produit créé avec succès !");
                         header("Location: /");
