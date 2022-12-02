@@ -31,7 +31,7 @@ class Store extends Model
         return Database::getInstance()->read($query);
     }
 
-    
+
     /**
      * selectOneById
      *
@@ -55,5 +55,20 @@ class Store extends Model
     {
         $query = "UPDATE stores SET name = :name WHERE id_stores = :id_stores";
         return Database::getInstance()->write($query, $data);
+    }
+
+    /**
+     * selectStoresByProducts
+     *
+     * @param int $id
+     * @return array|bool
+     */
+    public function selectStoresByProducts(int $id): array|bool
+    {
+        $query = "SELECT $this->table.name FROM $this->table 
+        INNER JOIN products_stores ON $this->table.id_stores = products_stores.id_stores 
+        WHERE products_stores.id_products = :id_products";
+
+        return Database::getInstance()->read($query, ["id_products" => $id]);
     }
 }

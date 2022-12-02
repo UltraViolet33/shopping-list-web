@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Core\Render;
 use App\Core\Helpers\Session;
 use App\Models\Product;
+use App\Models\Store;
 
 class ProductController extends Controller
 {
@@ -129,6 +130,21 @@ class ProductController extends Controller
         return null;
     }
 
+    
+    /**
+     * showDetails
+     *
+     * @return Render
+     */
+    public function showDetails(): Render
+    {
+        $this->checkIdUrl("/");
+
+        $singleProduct = (new Product())->selectOneById($_GET["id"]);
+        $storesProduct = (new Store())->selectStoresByProducts($_GET["id"]);
+        return Render::make("Products/details", compact("singleProduct", "storesProduct"));
+    }
+
 
     public function update(): Render
     {
@@ -202,6 +218,8 @@ class ProductController extends Controller
                 <button type="button" stock="' . $product->stock_actual . '" class="btn btn-primary addStockBtn" onclick="updateStock(this)" class="addStockBtn">+</button>
             </td>
             <td>' . $product->stock_min . '</td>
+            <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/details?id=' . $product->id_products . '">Voir details</a></button></td>
+            
             <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Editer</a></button></td>
             <td>
             <form method="POST" action="/product/delete" onsubmit="return confirm();">

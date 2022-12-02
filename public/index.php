@@ -15,8 +15,8 @@ $router->get("/product/update", ['App\Controllers\ProductController', 'update'])
 $router->post("/product/update", ['App\Controllers\ProductController', 'update']);
 $router->post("/product/updatestock", ['App\Controllers\ProductController', 'updateStock']);
 
-$router->post("/product/delete", ['App\ControllerS\ProductController', 'delete']);
-
+$router->post("/product/delete", ['App\Controllers\ProductController', 'delete']);
+$router->get("/product/details", ["App\Controllers\ProductController", 'showDetails']);
 
 // List
 $router->get("/list", ["App\Controllers\ListController", "index"]);

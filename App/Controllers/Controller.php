@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controllers;
+
 use App\Core\Render;
 
 abstract class Controller
@@ -42,5 +43,18 @@ abstract class Controller
     protected function getMsgErrors(): string
     {
         return $this->msgErrors;
+    }
+    
+    /**
+     * checkIdUrl
+     *
+     * @param string $urlRedirect
+     * @return void
+     */
+    protected function checkIdUrl(string $urlRedirect): void
+    {
+        if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
+            header("Location: $urlRedirect");
+        }
     }
 }

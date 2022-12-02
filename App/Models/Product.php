@@ -109,7 +109,9 @@ class Product extends Model
      */
     public function selectOneById(int $id): object
     {
-        $query = "SELECT *  FROM $this->table WHERE id_products = :id_products";
+        $query = "SELECT prod.name, prod.stock_min, prod.stock_actual FROM $this->table as prod
+         WHERE prod.id_products = :id_products";
+
         return $this->db->readOneRow($query, ['id_products' => $id]);
     }
 }
