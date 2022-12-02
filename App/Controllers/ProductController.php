@@ -6,20 +6,8 @@ use App\Core\Render;
 use App\Core\Helpers\Session;
 use App\Models\Product;
 
-class ProductController
+class ProductController extends Controller
 {
-    private string $msgErrors;
-
-    /**
-     * __construct
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->msgErrors = "";
-    }
-
 
     /**
      * index
@@ -86,28 +74,6 @@ class ProductController
         return Render::make("Products/add", compact('errors'));
     }
 
-
-    /**
-     * setMsgErrors
-     *
-     * @param  ?string $msgError
-     * @return void
-     */
-    private function setMsgErrors(?string $msgError): void
-    {
-        $this->msgErrors .= $msgError;
-    }
-
-
-    /**
-     * getMsgErrors
-     *
-     * @return string
-     */
-    private function getMsgErrors(): string
-    {
-        return $this->msgErrors;
-    }
 
 
     /**
@@ -242,7 +208,7 @@ class ProductController
             <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Editer</a></button></td>
             <td>
             <form method="POST" action="/product/delete" onsubmit="return confirm();">
-            <input type="hidden" name="id_product" value="'.$product->id_products.'">
+            <input type="hidden" name="id_product" value="' . $product->id_products . '">
             <button type="submit" class="btn btn-danger"><a style="color:white; text-decoration:none">Supprimer</a></button>
             </form>
             </td>

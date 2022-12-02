@@ -19,6 +19,11 @@ $router->post("/product/delete", ['App\ControllerS\ProductController', 'delete']
 
 
 // List
-$router->get("/list", ['App\Controllers\ListController', 'index']);
+$router->get("/list", ["App\Controllers\ListController", "index"]);
 
-(new App($router, ['method' => $_SERVER['REQUEST_METHOD'], 'uri' => $_SERVER['REQUEST_URI']]))->run();
+
+// Stores
+$router->get("/stores/add", ["App\Controllers\StoreController", "create"]);
+$router->post("/stores/add", ["App\Controllers\StoreController", "create"]);
+
+(new App($router, ["method" => $_SERVER["REQUEST_METHOD"], "uri" => $_SERVER["REQUEST_URI"]]))->run();

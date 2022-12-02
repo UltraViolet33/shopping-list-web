@@ -30,6 +30,15 @@ Session::init();
                     <li class="nav-item">
                         <a class="nav-link" href="/list">Liste de courses</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Magasins
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="stores/index">Tous les magasins</a></li>
+                            <li><a class="dropdown-item" href="/stores/add">Créer magasin</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>
