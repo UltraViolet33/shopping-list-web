@@ -6,6 +6,12 @@ use App\Core\Database\Database;
 
 class Product extends Model
 {
+
+    public function create(array $data): bool
+    {
+        return true;
+    }
+
     /**
      * insert
      *

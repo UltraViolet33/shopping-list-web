@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Core\Database\Database;
 
-class Model
+abstract class Model
 {
     protected  Database $db;
     protected string $table;
@@ -32,4 +32,6 @@ class Model
         $table = strtolower(explode("\\", get_class($this))[2] . 's');
         return $table;
     }
+
+    abstract protected function create(array $data): bool; 
 }
