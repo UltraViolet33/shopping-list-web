@@ -44,7 +44,7 @@ abstract class Controller
     {
         return $this->msgErrors;
     }
-    
+
     /**
      * checkIdUrl
      *
@@ -56,5 +56,23 @@ abstract class Controller
         if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
             header("Location: $urlRedirect");
         }
+    }
+    
+    /**
+     * checkFormValues
+     *
+     * @param  array $values
+     * @param  array $formValues
+     * @return bool
+     */
+    protected function checkFormValues(array $values, array $formValues): bool
+    {
+        foreach ($values as $value) {
+            if (!isset($formValues[$value]) || empty($formValues[$value])) {
+                return false;   
+            }
+        }
+
+        return true;
     }
 }

@@ -130,7 +130,7 @@ class ProductController extends Controller
         return null;
     }
 
-    
+
     /**
      * showDetails
      *
@@ -195,9 +195,24 @@ class ProductController extends Controller
     public function addStoreToProduct()
     {
         $this->checkIdUrl("/");
-
-        
         $idProduct = (int)$_GET['id'];
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            var_dump($_POST);
+            $valuesToCheck = ["store", "price"];
+            if ($this->checkFormValues($valuesToCheck, $_POST)) {
+
+                //add the store to the product
+                $data = ["id_products" => $idProduct, "id_stores" => $_POST["store"], "amount" => $_POST["price"]];
+
+                (new Product())->addStoreToProduct($data);
+                header("Location: /");
+            } else {
+
+                $this->setMsgErrors("Veuillez remplir tout les champs !<br>");
+            }
+        }
+
 
         $productModel = new Product();
         $singleProduct = $productModel->getSingleProduct($idProduct);
@@ -251,6 +266,8 @@ class ProductController extends Controller
 
         return $html;
     }
+
+
 
 
 

@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div>
-                    <input type="submit" class="btn btn-primary" name="createStore" value="Valider">
+                    <input type="submit" class="btn btn-primary" name="addStoreToProduct" value="Valider">
                 </div>
             </form>
             <?php if (strlen($errors) !== 0) : ?>

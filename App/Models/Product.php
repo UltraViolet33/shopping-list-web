@@ -114,4 +114,17 @@ class Product extends Model
 
         return $this->db->readOneRow($query, ['id_products' => $id]);
     }
+
+    
+    /**
+     * addStoreToProduct
+     *
+     * @param  array $data
+     * @return bool
+     */
+    public function addStoreToProduct(array $data): bool
+    {
+        $query = "INSERT INTO prices(amount, id_products, id_stores) VALUES(:amount, :id_products, :id_stores)";
+        return $this->db->write($query, $data);
+    }
 }
