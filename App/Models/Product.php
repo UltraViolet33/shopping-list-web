@@ -154,4 +154,17 @@ class Product extends Model
         $query = "SELECT id_stores FROM prices WHERE id_products = :id_products";
         return $this->db->read($query, ["id_products" => $id]);
     }
+    
+    /**
+     * selectPriceByStoreAndProduct
+     *
+     * @param array $data
+     * @return bool|object
+     */
+    public function selectPriceByStoreAndProduct(array $data): bool|object
+    {
+        $query = "SELECT amount FROM prices WHERE id_products = :id_products AND id_stores = :id_stores";
+        return $this->db->readOneRow($query, $data);
+
+    }
 }

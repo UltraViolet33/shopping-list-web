@@ -84,9 +84,9 @@ class Database
      *
      * @param  string $query
      * @param  array $data
-     * @return object
+     * @return bool|object
      */
-    public function readOneRow(string $query, array $data = []): object
+    public function readOneRow(string $query, array $data = []): bool|object
     {
         $statement = $this->PDOInstance->prepare($query);
         $result = $statement->execute($data);

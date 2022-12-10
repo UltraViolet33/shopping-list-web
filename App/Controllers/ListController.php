@@ -4,6 +4,8 @@ namespace App\Controllers;
 
 use App\Core\Render;
 use App\Models\Product;
+use App\Models\Store;
+
 
 class ListController
 {
@@ -17,9 +19,19 @@ class ListController
     {
         // $products[] =   $this->displayTableProducts()[0];
         // $products[] = $this->displayTableProducts()[1];
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            var_dump($_POST);
+        }
+
+        // $productModel = new Product();
+        // $productsToBuy = $productModel->selectListProducts();
+
+        // $this->calculatePriceByStores($productsToBuy);
+
         return Render::make("List/index");
     }
-    
+
     /**
      * getProductList
      *
@@ -28,7 +40,41 @@ class ListController
     public function getProductList(): string
     {
         $productModel = new Product();
-        return json_encode($productModel->selectListProducts());
+        $productsToBuy = $productModel->selectListProducts();
+
+        $stores =  $this->calculatePriceByStores($productsToBuy);
+
+        $data = ["stores" => $stores, "products" => $productsToBuy];
+
+
+        return json_encode($data);
+    }
+
+    private function calculatePriceByStores(array $products): array
+    {
+        $allStores = (new Store())->selectAll();
+        foreach ($allStores as $store) {
+            $store->totalPrice = 0;
+
+            $data = [];
+            $data["id_stores"] = $store->id_stores;
+
+            foreach ($products as $product) {
+                $data["id_products"] = $product->id_products;
+                $price = (new Product())->selectPriceByStoreAndProduct($data);
+
+                $numberToBuy = $product->stock_min - $product->stock_actual;
+
+                $numberToBuy = $numberToBuy == 0 ? 1 : $numberToBuy;
+
+            
+                if ($price) {
+                    $store->totalPrice += ((int)$price->amount * $numberToBuy);
+                }
+            }
+        }
+
+        return $allStores;
     }
 
 
