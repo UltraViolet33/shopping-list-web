@@ -43,6 +43,10 @@
             <?php else : ?>
                 <p>Pas de magasins enregistré pour ce produit</p>
             <?php endif; ?>
+
+            <div>
+                <a href="/product/addStore?id=<?= $singleProduct->id_products?>" class="btn btn-primary">Ajouter un magasin</a>
+            </div>
         </div>
     </div>
 </div>

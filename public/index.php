@@ -18,6 +18,12 @@ $router->post("/product/updatestock", ['App\Controllers\ProductController', 'upd
 $router->post("/product/delete", ['App\Controllers\ProductController', 'delete']);
 $router->get("/product/details", ["App\Controllers\ProductController", 'showDetails']);
 
+
+$router->get("/product/addStore", ["App\Controllers\ProductController", 'addStoreToProduct']);
+$router->post("/product/addStore", ["App\Controllers\ProductController", 'addStoreToProduct']);
+
+
+
 // List
 $router->get("/list", ["App\Controllers\ListController", "index"]);
 

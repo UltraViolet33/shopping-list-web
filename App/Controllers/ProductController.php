@@ -192,6 +192,25 @@ class ProductController extends Controller
     }
 
 
+    public function addStoreToProduct()
+    {
+        $this->checkIdUrl("/");
+
+        
+        $idProduct = (int)$_GET['id'];
+
+        $productModel = new Product();
+        $singleProduct = $productModel->getSingleProduct($idProduct);
+
+        $allStores = (new Store())->selectAll();
+
+        $errors = $this->getMsgErrors();
+        $this->setMsgErrors(null);
+
+        return Render::make("Products/addStore", compact("singleProduct", "allStores", "errors"));
+    }
+
+
     /**
      * displayTableProducts
      * create the html table
