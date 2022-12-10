@@ -26,6 +26,8 @@ $router->post("/product/addStore", ["App\Controllers\ProductController", 'addSto
 
 // List
 $router->get("/list", ["App\Controllers\ListController", "index"]);
+$router->get("/getList", ["App\Controllers\ListController", "getProductList"]);
+
 
 
 // Stores

@@ -15,9 +15,20 @@ class ListController
      */
     public function index(): Render
     {
-        $products[] =   $this->displayTableProducts()[0];
-        $products[] = $this->displayTableProducts()[1];
-        return Render::make("List/index", compact('products'));
+        // $products[] =   $this->displayTableProducts()[0];
+        // $products[] = $this->displayTableProducts()[1];
+        return Render::make("List/index");
+    }
+    
+    /**
+     * getProductList
+     *
+     * @return string
+     */
+    public function getProductList(): string
+    {
+        $productModel = new Product();
+        return json_encode($productModel->selectListProducts());
     }
 
 

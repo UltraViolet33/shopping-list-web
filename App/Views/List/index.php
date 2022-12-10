@@ -9,17 +9,17 @@
             <table class="table">
                 <thead>
                     <tr class="text-center">
+                        <th scope="col">Acheter ?</th>
                         <th scope="col">Name</th>
                         <th scope="col">Nombre</th>
                     </tr>
                 </thead>
                 <tbody id="tableProducts">
-                    <?php if (isset($products)) : ?>
-                        <?= $products[0] ?>
-                    <?php endif; ?>
+
                 </tbody>
             </table>
-            <h4>Nombre d'articles à acheter : <?= $products[1] ?></h4>
+
         </div>
     </div>
 </div>
+<script src="assets/js/list.js"></script>
