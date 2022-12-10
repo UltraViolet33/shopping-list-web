@@ -133,12 +133,25 @@ class Product extends Model
      * selectStoresAndPrice
      *
      * @param  int $id
-     * @return array
+     * @return array | bool
      */
-    public function selectStoresAndPrice(int $id): array
+    public function selectStoresAndPrice(int $id): array|bool
     {
         $query = "SELECT prices.amount, stores.name FROM prices 
         INNER JOIN stores ON stores.id_stores = prices.id_stores WHERE prices.id_products = :id_products";
+        return $this->db->read($query, ["id_products" => $id]);
+    }
+
+    
+    /**
+     * getAllStoresProduct
+     *
+     * @param  int $id
+     * @return array | bool
+     */
+    public function getAllStoresProduct(int $id): array|bool
+    {
+        $query = "SELECT id_stores FROM prices WHERE id_products = :id_products";
         return $this->db->read($query, ["id_products" => $id]);
     }
 }

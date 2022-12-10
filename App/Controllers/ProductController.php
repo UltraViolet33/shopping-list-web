@@ -217,11 +217,38 @@ class ProductController extends Controller
             }
         }
 
-
         $productModel = new Product();
         $singleProduct = $productModel->getSingleProduct($idProduct);
 
         $allStores = (new Store())->selectAll();
+
+        $storesProduct = $productModel->getAllStoresProduct($idProduct);
+
+        if($storesProduct)
+        {
+            $stores = [];
+
+            foreach($allStores as $store)
+            {
+                $insert = true;
+                
+                foreach($storesProduct as $storeProduct)
+                {
+                    if($store->id_stores == $storeProduct->id_stores)
+                    {
+                        $insert = false;
+                    }
+                }
+                
+                if($insert)
+                {
+                    $stores[] = $store;
+                }
+            }
+            
+            $allStores = $stores;
+        }
+
 
         $errors = $this->getMsgErrors();
         $this->setMsgErrors(null);
