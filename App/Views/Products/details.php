@@ -1,4 +1,3 @@
-<?php var_dump($singleProduct); ?>
 <div class="container my-3">
     <div class="row">
         <div class="col-12">
@@ -37,15 +36,15 @@
                     <?php foreach ($storesProduct as $store) : ?>
                         <tr>
                             <th><?= $store->name ?></th>
+                            <th><?= $store->amount ?> €</th>
                         </tr>
                     <?php endforeach; ?>
                 </table>
             <?php else : ?>
                 <p>Pas de magasins enregistré pour ce produit</p>
             <?php endif; ?>
-
             <div>
-                <a href="/product/addStore?id=<?= $singleProduct->id_products?>" class="btn btn-primary">Ajouter un magasin</a>
+                <a href="/product/addStore?id=<?= $singleProduct->id_products ?>" class="btn btn-primary">Ajouter un magasin</a>
             </div>
         </div>
     </div>

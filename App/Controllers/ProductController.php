@@ -139,9 +139,8 @@ class ProductController extends Controller
     public function showDetails(): Render
     {
         $this->checkIdUrl("/");
-
         $singleProduct = (new Product())->selectOneById($_GET["id"]);
-        $storesProduct = (new Store())->selectStoresByProducts($_GET["id"]);
+        $storesProduct = (new Product())->selectStoresAndPrice($_GET["id"]);
         return Render::make("Products/details", compact("singleProduct", "storesProduct"));
     }
 
@@ -192,6 +191,11 @@ class ProductController extends Controller
     }
 
 
+    /**
+     * addStoreToProduct
+     *
+     * @return void
+     */
     public function addStoreToProduct()
     {
         $this->checkIdUrl("/");

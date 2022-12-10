@@ -115,7 +115,7 @@ class Product extends Model
         return $this->db->readOneRow($query, ['id_products' => $id]);
     }
 
-    
+
     /**
      * addStoreToProduct
      *
@@ -126,5 +126,19 @@ class Product extends Model
     {
         $query = "INSERT INTO prices(amount, id_products, id_stores) VALUES(:amount, :id_products, :id_stores)";
         return $this->db->write($query, $data);
+    }
+
+
+    /**
+     * selectStoresAndPrice
+     *
+     * @param  int $id
+     * @return array
+     */
+    public function selectStoresAndPrice(int $id): array
+    {
+        $query = "SELECT prices.amount, stores.name FROM prices 
+        INNER JOIN stores ON stores.id_stores = prices.id_stores WHERE prices.id_products = :id_products";
+        return $this->db->read($query, ["id_products" => $id]);
     }
 }
