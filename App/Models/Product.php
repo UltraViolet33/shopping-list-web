@@ -73,7 +73,7 @@ class Product extends Model
      */
     public function selectListProducts(): array
     {
-        $query = "SELECT *  FROM $this->table WHERE stock_actual <= stock_min";
+        $query = "SELECT * , (stock_min - stock_actual) AS number_item FROM $this->table WHERE stock_actual <= stock_min";
         return $this->db->read($query);
     }
 
@@ -85,7 +85,7 @@ class Product extends Model
      */
     public function getSingleProduct(int $idProduct): object
     {
-        $query = "SELECT *  FROM $this->table WHERE id_products = :id_product";
+        $query = "SELECT * FROM $this->table WHERE id_products = :id_product";
         return $this->db->read($query, ['id_product' => $idProduct])[0];
     }
 
@@ -142,7 +142,7 @@ class Product extends Model
         return $this->db->read($query, ["id_products" => $id]);
     }
 
-    
+
     /**
      * getAllStoresProduct
      *
@@ -154,7 +154,7 @@ class Product extends Model
         $query = "SELECT id_stores FROM prices WHERE id_products = :id_products";
         return $this->db->read($query, ["id_products" => $id]);
     }
-    
+
     /**
      * selectPriceByStoreAndProduct
      *
@@ -165,6 +165,21 @@ class Product extends Model
     {
         $query = "SELECT amount FROM prices WHERE id_products = :id_products AND id_stores = :id_stores";
         return $this->db->readOneRow($query, $data);
+    }
 
+    /**
+     * selectProductsStoresAndPricesForList
+     *
+     * @return array
+     */
+    public function selectProductsStoresAndPricesForList(): array
+    {
+        $query = "SELECT products.name, products.id_products, GROUP_CONCAT(stores.name,',', prices.amount) AS prices_stores,
+        (products.stock_min - products.stock_actual)  AS number_item
+                  FROM products, prices, stores WHERE products.id_products = prices.id_products
+                AND stores.id_stores = prices.id_stores AND products.stock_actual <= products.stock_min
+                GROUP BY products.id_products, products.name";
+
+        return $this->db->read($query);
     }
 }

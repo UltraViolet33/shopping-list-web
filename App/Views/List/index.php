@@ -13,12 +13,12 @@
                             <th scope="col">Acheter ?</th>
                             <th scope="col">Produit</th>
                             <th scope="col">Nombre</th>
+                            <th scope="col">Price</th>
                         </tr>
                     </thead>
                     <tbody id="tableProducts">
                     </tbody>
                 </table>
-                <button class="btn btn-primary" type="submit">Afficher les magasins</button>
             </form>
         </div>
         <div class="row justify-content-center my-3">
