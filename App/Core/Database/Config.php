@@ -20,7 +20,7 @@ class Config
     {
         self::$dbConfig['db_type'] = "mysql";
         self::$dbConfig['db_host'] = "localhost";
-        self::$dbConfig['db_name'] = "shopping-list";
+        self::$dbConfig['db_name'] = "shop-list";
         self::$dbConfig['db_user'] = "root";
         self::$dbConfig['db_password'] = "";
     }

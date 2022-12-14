@@ -34,7 +34,9 @@ class ListController
         $productModel = new Product();
         $productsToBuy = $productModel->selectListProducts();
 
-        return json_encode($productsToBuy);
+        $products = $this->addStoresToProducts($productsToBuy);
+
+        return json_encode($products);
     }
 
     private function addStoresToProducts(array $products): array

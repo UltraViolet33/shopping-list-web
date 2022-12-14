@@ -5,6 +5,7 @@ fetch("/getList")
   });
 
 const createTable = products => {
+  console.log(products);
   let stores = [];
 
   const tableBody = document.querySelector("#tableProducts");
@@ -74,11 +75,11 @@ const handleCheck = (products, stores) => {
           if (storeProduct.idStore == store.idStore) {
             if (check.checked) {
               store.total += storeProduct.price
-                ? parseInt(storeProduct.price.amount)
+                ? parseFloat(storeProduct.price.amount)
                 : 0;
             } else {
               store.total -= storeProduct.price
-                ? parseInt(storeProduct.price.amount)
+                ? parseFloat(storeProduct.price.amount)
                 : 0;
             }
 
