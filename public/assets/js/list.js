@@ -74,13 +74,19 @@ const handleCheck = (products, stores) => {
         for (const storeProduct of product.stores) {
           if (storeProduct.idStore == store.idStore) {
             if (check.checked) {
-              store.total += storeProduct.price
-                ? parseFloat(storeProduct.price.amount)
-                : 0;
+              if (storeProduct.price) {
+                store.total +=
+                  parseFloat(storeProduct.price.amount) * product.number_item;
+              } else {
+                store.total = store.total;
+              }
             } else {
-              store.total -= storeProduct.price
-                ? parseFloat(storeProduct.price.amount)
-                : 0;
+              if (storeProduct.price) {
+                store.total -=
+                  parseFloat(storeProduct.price.amount) * product.number_item;
+              } else {
+                store.total = store.total;
+              }
             }
 
             displayStores(stores);

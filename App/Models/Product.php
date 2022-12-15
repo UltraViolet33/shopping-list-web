@@ -73,7 +73,7 @@ class Product extends Model
      */
     public function selectListProducts(): array
     {
-        $query = "SELECT * , (stock_min - stock_actual) AS number_item FROM $this->table WHERE stock_actual <= stock_min";
+        $query = "SELECT * , (stock_min - stock_actual + 1) AS number_item FROM $this->table WHERE stock_actual <= stock_min";
         return $this->db->read($query);
     }
 
@@ -175,7 +175,7 @@ class Product extends Model
     public function selectProductsStoresAndPricesForList(): array
     {
         $query = "SELECT products.name, products.id_products, GROUP_CONCAT(stores.name,',', prices.amount) AS prices_stores,
-        (products.stock_min - products.stock_actual)  AS number_item
+        (products.stock_min - products.stock_actual + 1)  AS number_item
                   FROM products, prices, stores WHERE products.id_products = prices.id_products
                 AND stores.id_stores = prices.id_stores AND products.stock_actual <= products.stock_min
                 GROUP BY products.id_products, products.name";
