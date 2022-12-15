@@ -71,8 +71,8 @@ class Store extends Model
 
         return Database::getInstance()->read($query, ["id_products" => $id]);
     }
-    
-    
+
+
     /**
      * delete
      *
@@ -81,7 +81,7 @@ class Store extends Model
      */
     public function delete(int $id): bool
     {
-        $query = "DELETE * FROM $this->table WHERE id_stores = :id_stores";
+        $query = "DELETE FROM $this->table WHERE id_stores = :id_stores";
         return Database::getInstance()->write($query, ["id_stores" => $id]);
     }
 }

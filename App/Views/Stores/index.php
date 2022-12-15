@@ -19,7 +19,12 @@
                         <tr>
                             <td><?= $store->name ?></td>
                             <td><a href="/stores/edit?id=<?= $store->id_stores ?>">Modifier</a></td>
-                            <td><a >Supprimer</a></td>
+                            <td>
+                                <form method="POST" action="stores/delete">
+                                    <input type="hidden" value="<?= $store->id_stores ?>" name="id_store">
+                                    <button onclick="return confirm('Are you sure ?')" class="btn btn-primary" type="submit">Supprimer</button>
+                            </td>
+                            </form>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

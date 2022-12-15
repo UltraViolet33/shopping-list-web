@@ -80,8 +80,8 @@ class StoreController extends Controller
         $this->setMsgErrors(null);
         return Render::make("Stores/edit", compact("singleStore", "errors"));
     }
-    
-    
+
+
     /**
      * delete
      *
@@ -95,9 +95,11 @@ class StoreController extends Controller
 
                 $id_store = $_POST["id_store"];
 
-                // check if the store id exists
-
-                // delete the store
+                $storeModel = new Store();
+                $store = $storeModel->selectOneById($id_store);
+                if ($store) {
+                    $storeModel->delete($id_store);
+                }
             }
         }
 
