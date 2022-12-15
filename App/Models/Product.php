@@ -95,7 +95,7 @@ class Product extends Model
      * @param  int $id
      * @return bool
      */
-    public function deleteProduct(int $id): bool
+    public function delete(int $id): bool
     {
         $query = "DELETE FROM $this->table WHERE id_products = :id_product";
         return $this->db->write($query, ['id_product' => $id]);

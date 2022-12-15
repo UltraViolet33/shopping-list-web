@@ -31,17 +31,21 @@ class ProductController extends Controller
     {
         if (!empty($_POST['createProduct'])) {
 
-            if (!empty($_POST['name']) && !empty($_POST['stockMin']) && !empty($_POST['stockActual'])) {
+            if (!empty($_POST['name'])) {
 
                 $recurent = 0;
+                $stockMin = (int) $_POST["stockMin"] ?? 0;
+                $stockActual = (int) $_POST["stockActual"] ?? 0;
 
-                if (!is_numeric($_POST['stockMin'])) {
-                    $this->setMsgErrors("Le stock minimale doit être un nombre ! <br>");
+                if ($stockActual < 0 || $stockActual > 100) {
+                    $this->setMsgErrors("Stock actual must be >= 0 and < 100");
                 }
 
-                if (!is_numeric($_POST['stockActual'])) {
-                    $this->setMsgErrors("Le stock actuel doit être un nombre ! <br>");
+
+                if ($stockMin < 0 || $stockMin > 100) {
+                    $this->setMsgErrors("Stock minimal must be >= 0 and < 100");
                 }
+
 
                 if (isset($_POST['recurent'])) {
                     if ($_POST['recurent'] !== "on") {
@@ -55,8 +59,8 @@ class ProductController extends Controller
                     $data = [];
 
                     $data["name"] = $_POST["name"];
-                    $data['stock_min'] = (int)$_POST['stockMin'];
-                    $data['stock_actual'] = (int)$_POST['stockActual'];
+                    $data['stock_min'] = $stockMin;
+                    $data['stock_actual'] = $stockActual;
                     $data['recurent'] = $recurent;
 
                     if ((new Product())->create($data)) {
@@ -86,6 +90,7 @@ class ProductController extends Controller
     public function updateStock(): string
     {
         $test = ['msg' => 'ok'];
+
         $data = file_get_contents("php://input");
         $data = json_decode($data);
 
@@ -114,17 +119,13 @@ class ProductController extends Controller
 
     public function delete()
     {
-
         if (!isset($_POST['id_product']) || !is_numeric($_POST['id_product'])) {
             header("Location: /");
             return null;
         }
 
         $productModel = new Product();
-
-        $productModel->deleteProduct($_POST['id_product']);
-
-        //remove product
+        $productModel->delete($_POST['id_product']);
 
         header("Location: /");
         return null;
@@ -224,28 +225,23 @@ class ProductController extends Controller
 
         $storesProduct = $productModel->getAllStoresProduct($idProduct);
 
-        if($storesProduct)
-        {
+        if ($storesProduct) {
             $stores = [];
 
-            foreach($allStores as $store)
-            {
+            foreach ($allStores as $store) {
                 $insert = true;
-                
-                foreach($storesProduct as $storeProduct)
-                {
-                    if($store->id_stores == $storeProduct->id_stores)
-                    {
+
+                foreach ($storesProduct as $storeProduct) {
+                    if ($store->id_stores == $storeProduct->id_stores) {
                         $insert = false;
                     }
                 }
-                
-                if($insert)
-                {
+
+                if ($insert) {
                     $stores[] = $store;
                 }
             }
-            
+
             $allStores = $stores;
         }
 
