@@ -9,7 +9,6 @@ use App\Models\Store;
 
 class StoreController extends Controller
 {
-
     /**
      * index
      *
@@ -33,7 +32,7 @@ class StoreController extends Controller
             if (strlen($_POST['name']) > 0) {
                 $data = ["name" => Format::cleanInput($_POST["name"])];
 
-                if ((new Store)->create($data)) {
+                if ((new Store())->create($data)) {
                     Session::init();
                     Session::setMessage("Magasin créé avec succès !");
                     header("Location: /stores");
@@ -66,7 +65,7 @@ class StoreController extends Controller
             if (strlen($_POST["name"]) > 1) {
                 $data = ["id_stores" => $singleStore->id_stores, "name" => Format::cleanInput($_POST["name"])];
 
-                if ((new Store)->update($data)) {
+                if ((new Store())->update($data)) {
                     Session::init();
                     Session::setMessage("Magasin créé avec succès !");
                     header("Location: /stores");
@@ -80,5 +79,28 @@ class StoreController extends Controller
         $errors = $this->getMsgErrors();
         $this->setMsgErrors(null);
         return Render::make("Stores/edit", compact("singleStore", "errors"));
+    }
+    
+    
+    /**
+     * delete
+     *
+     * @return void
+     */
+    public function delete(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            if (isset($_POST["id_store"]) && !empty($_POST["id_store"])) {
+
+                $id_store = $_POST["id_store"];
+
+                // check if the store id exists
+
+                // delete the store
+            }
+        }
+
+        header("Location: /stores");
     }
 }
