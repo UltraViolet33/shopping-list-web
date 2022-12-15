@@ -27,7 +27,6 @@ $router->post("/product/addStore", ["App\Controllers\ProductController", 'addSto
 // List
 $router->get("/list", ["App\Controllers\ListController", "index"]);
 $router->post("/list", ["App\Controllers\ListController", "index"]);
-
 $router->get("/getList", ["App\Controllers\ListController", "getProductList"]);
 
 
@@ -38,6 +37,9 @@ $router->get("/stores/add", ["App\Controllers\StoreController", "create"]);
 $router->post("/stores/add", ["App\Controllers\StoreController", "create"]);
 $router->get("/stores/edit", ["App\Controllers\StoreController", "update"]);
 $router->post("/stores/edit", ["App\Controllers\StoreController", "update"]);
+
+$router->post("/stores/delete", ["App\Controllers\StoreController", "delete"]);
+
 
 
 

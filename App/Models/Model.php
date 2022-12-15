@@ -40,4 +40,6 @@ abstract class Model
     abstract protected function selectAll(): array;
 
     abstract protected function selectOneById(int $id): object;
+
+    abstract protected function delete(int $id): bool;
 }
