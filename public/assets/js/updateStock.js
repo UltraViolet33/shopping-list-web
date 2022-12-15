@@ -7,7 +7,15 @@ function updateStock(element) {
   if (element.textContent === "+") {
     newStock = parseInt(stock) + 1;
   } else if (element.textContent === "-") {
-    newStock = parseInt(stock) - 1;
+    if (parseInt(stock) == 0) {
+      newStock = 0;
+    } else {
+      if (parseInt(stock) == 100) {
+        newStock = stock;
+      } else {
+        newStock = parseInt(stock) - 1;
+      }
+    }
   } else {
     return false;
   }
@@ -27,11 +35,11 @@ const postData = (data, path) => {
     },
     body: JSON.stringify(data),
   })
-    .then((response) => response.json())
-    .then((response) => displayProductsHTML(response.products));
+    .then(response => response.json())
+    .then(response => displayProductsHTML(response.products));
 };
 
-const displayProductsHTML = (productsHTML) => {
+const displayProductsHTML = productsHTML => {
   const tableProducts = document.querySelector("#tableProducts");
   tableProducts.innerHTML = productsHTML;
 };
