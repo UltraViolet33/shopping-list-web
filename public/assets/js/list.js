@@ -77,8 +77,7 @@ const handleCheck = (products, stores) => {
               if (storeProduct.price) {
                 store.total +=
                   parseFloat(storeProduct.price.amount) * product.number_item;
-              } else {
-                store.total = store.total;
+              } else {store.total = store.total;
               }
             } else {
               if (storeProduct.price) {
