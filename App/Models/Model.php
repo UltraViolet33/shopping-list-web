@@ -4,9 +4,9 @@ namespace App\Models;
 
 use App\Core\Database\Database;
 
-class Model
+abstract class Model
 {
-    private Database $db;
+    protected  Database $db;
     protected string $table;
 
     /**
@@ -32,4 +32,14 @@ class Model
         $table = strtolower(explode("\\", get_class($this))[2] . 's');
         return $table;
     }
+
+    abstract protected function create(array $data): bool;
+
+    abstract protected function update(array $data): bool;
+
+    abstract protected function selectAll(): array;
+
+    abstract protected function selectOneById(int $id): object;
+
+    abstract protected function delete(int $id): bool;
 }

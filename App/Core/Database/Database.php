@@ -13,6 +13,7 @@ class Database
     private ?PDO $PDOInstance = null;
     private static ?self $instance = null;
 
+
     /**
      * __construct
      *
@@ -59,20 +60,43 @@ class Database
      * @param  int $method
      * @return bool|array
      */
-    public function read(string $query,  array $data = array(), int $method = PDO::FETCH_ASSOC): bool|array
+    public function read(string $query,  array $data = array(), int $method = PDO::FETCH_OBJ, $class = null): bool|array
     {
         $statement = $this->PDOInstance->prepare($query);
         $result = $statement->execute($data);
 
         if ($result) {
             $data = $statement->fetchAll($method);
+
+            if ($method === PDO::FETCH_CLASS) {
+                $data = $statement->fetchAll($method, $class);
+            }
             if (is_array($data) && count($data) > 0) {
                 return $data;
             }
         }
-        return false;
+        return [];
     }
 
+
+    /**
+     * readOneRow
+     *
+     * @param  string $query
+     * @param  array $data
+     * @return bool|object
+     */
+    public function readOneRow(string $query, array $data = []): bool|object
+    {
+        $statement = $this->PDOInstance->prepare($query);
+        $result = $statement->execute($data);
+
+        if ($result) {
+            return $statement->fetch(PDO::FETCH_OBJ);
+        }
+
+        return false;
+    }
 
     /**
      * write
@@ -91,6 +115,7 @@ class Database
         }
         return false;
     }
+
 
     /**
      * getLastInsertId

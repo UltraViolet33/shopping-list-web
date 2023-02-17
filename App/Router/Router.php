@@ -4,7 +4,6 @@ namespace App\Router;
 
 class Router
 {
-
     private array $routes = [];
 
 
@@ -21,6 +20,7 @@ class Router
         $this->routes[$requestedMethod][$path] = $action;
     }
 
+
     /**
      * get
      *
@@ -32,6 +32,7 @@ class Router
     {
         $this->register($path, $action, 'GET');
     }
+
 
     /**
      * post
@@ -45,14 +46,15 @@ class Router
         $this->register($path, $action, 'POST');
     }
 
+
     /**
      * resolve
      *
      * @param  string $method
      * @param  string $uri
-     * @return string
+     * @return 
      */
-    public function resolve(string $method, string $uri): string
+    public function resolve(string $method, string $uri)
     {
         $path = explode('?', $uri)[0];
         $action = $this->routes[$method][$path] ?? null;
@@ -62,15 +64,15 @@ class Router
         }
 
         if (is_array($action)) {
-
             [$class, $classMethod] = $action;
 
             if (class_exists($class) && method_exists($class, $classMethod)) {
-                $controller = new $class;
+                $controller = new $class();
                 return call_user_func_array([$controller, $classMethod], []);
             }
         }
     }
+
 
     /**
      * getRoutes
