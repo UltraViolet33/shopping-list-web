@@ -12,8 +12,16 @@ class ProductController extends Controller
 
     public function index(): Render
     {
+        // $productsHTML = $this->displayTableProducts();
+        return Render::make("Products/index");
+    }
+
+
+
+    public function getAllProducts()
+    {
         $productsHTML = $this->displayTableProducts();
-        return Render::make("Products/index", compact('productsHTML'));
+        return json_encode(["products" => $productsHTML]);
     }
 
 

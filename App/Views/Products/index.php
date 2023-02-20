@@ -26,12 +26,10 @@ if (!is_null(Session::getMessage())) : ?>
                     </tr>
                 </thead>
                 <tbody id="tableProducts">
-                    <?php if (isset($productsHTML)) : ?>
-                        <?= $productsHTML ?>
-                    <?php endif; ?>
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<script src="assets/js/updateStock.js"></script>
+<script src="assets/js/indexProducts.js"></script>
+<!-- <script src="assets/js/updateStock.js"></script> -->

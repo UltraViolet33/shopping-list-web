@@ -9,6 +9,8 @@ use App\Router\Router;
 $router = new Router();
 $router->get('/', ['App\Controllers\ProductController', 'index']);
 
+$router->get("/products/all", ["App\Controllers\ProductController", "getAllProducts"]);
+
 
 // Product
 $router->get('/product/create', ['App\Controllers\ProductController', 'create']);
