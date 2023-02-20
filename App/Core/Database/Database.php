@@ -29,52 +29,31 @@ class Database
     }
 
 
-    public static function getNewInstance(): self
-    {
-        return new Database();
-    }
+    // public static function getNewInstance(): self
+    // {
+    //     return new Database();
+    // }
 
-    public function read(string $query,  array $data = array(), int $method = PDO::FETCH_OBJ, $class = null): bool|array
+    public function read(string $query,  array $data = array()): array
     {
         $statement = $this->PDOInstance->prepare($query);
-        $result = $statement->execute($data);
-
-        if ($result) {
-            $data = $statement->fetchAll($method);
-
-            if ($method === PDO::FETCH_CLASS) {
-                $data = $statement->fetchAll($method, $class);
-            }
-            if (is_array($data) && count($data) > 0) {
-                return $data;
-            }
-        }
-        return [];
+        $statement->execute($data);
+        return $statement->fetchAll(PDO::FETCH_OBJ);
     }
 
 
-    public function readOneRow(string $query, array $data = []): bool|object
+    public function readOneRow(string $query, array $data = []): object|bool
     {
         $statement = $this->PDOInstance->prepare($query);
-        $result = $statement->execute($data);
-
-        if ($result) {
-            return $statement->fetch(PDO::FETCH_OBJ);
-        }
-
-        return false;
+        $statement->execute($data);
+        return $statement->fetch(PDO::FETCH_OBJ);
     }
 
 
     public function write(string $query, array $data = array()): bool
     {
         $statement = $this->PDOInstance->prepare($query);
-        $result = $statement->execute($data);
-
-        if ($result) {
-            return true;
-        }
-        return false;
+        return $statement->execute($data);
     }
 
 
