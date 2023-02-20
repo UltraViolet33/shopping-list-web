@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Core\Database\Database;
-use PhpParser\Node\Expr\Cast\Object_;
 
 class Product extends Model
 {

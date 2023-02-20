@@ -2,20 +2,13 @@
 
 namespace App\Core\Database;
 
-/**
- * Singleton Pattern
- */
 class Config
 {
 
     private static $instance;
     public static array $dbConfig;
 
-    /**
-     * __construct
-     *
-     * @return void
-     */
+
     private function __construct()
     {
         self::$dbConfig['db_type'] = "mysql";
@@ -26,11 +19,6 @@ class Config
     }
 
 
-    /**
-     * init
-     *
-     * @return self
-     */
     private static function init(): self
     {
         if (is_null(self::$instance)) {
@@ -41,12 +29,6 @@ class Config
     }
 
 
-    /**
-     * getValue
-     *
-     * @param  string $key
-     * @return string
-     */
     public static function getValue(string $key): string
     {
         self::init();

@@ -9,23 +9,15 @@ abstract class Model
     protected  Database $db;
     protected string $table;
 
-    /**
-     * __construct
-     *
-     * @return void
-     */
+
     public function __construct()
     {
         $this->db = Database::getInstance();
-        $this->table = get_class($this);
+        // $this->table = get_class($this);
         $this->table = $this->getTableName();
     }
 
-    /**
-     * getTableName
-     *
-     * @return string
-     */
+
     private function getTableName(): string
     {
         $table = get_class($this);

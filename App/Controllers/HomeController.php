@@ -7,11 +7,8 @@ use App\Models\Product;
 
 class HomeController
 {
-    /**
-     * index
-     *
-     * @return Render
-     */
+
+
     public function index(): Render
     {
         $product = new Product();

@@ -12,45 +12,24 @@ abstract class Controller
     abstract protected function update(): Render;
 
 
-    /**
-     * __construct
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->msgErrors = "";
     }
 
 
-    /**
-     * setMsgErrors
-     *
-     * @param  ?string $msgError
-     * @return void
-     */
     protected function setMsgErrors(?string $msgError): void
     {
         $this->msgErrors .= $msgError;
     }
 
 
-    /**
-     * getMsgErrors
-     *
-     * @return string
-     */
     protected function getMsgErrors(): string
     {
         return $this->msgErrors;
     }
 
-    /**
-     * checkIdUrl
-     *
-     * @param string $urlRedirect
-     * @return void
-     */
+
     protected function checkIdUrl(string $urlRedirect): void
     {
         if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
@@ -58,13 +37,7 @@ abstract class Controller
         }
     }
     
-    /**
-     * checkFormValues
-     *
-     * @param  array $values
-     * @param  array $formValues
-     * @return bool
-     */
+
     protected function checkFormValues(array $values, array $formValues): bool
     {
         foreach ($values as $value) {

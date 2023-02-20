@@ -10,11 +10,6 @@ use App\Models\Store;
 class ProductController extends Controller
 {
 
-    /**
-     * index
-     *
-     * @return Render
-     */
     public function index(): Render
     {
         $productsHTML = $this->displayTableProducts();
