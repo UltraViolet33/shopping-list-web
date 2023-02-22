@@ -1,4 +1,4 @@
-    <div class="container my-3">
+<div class="container my-3">
     <div class="row">
         <div class="col-12">
             <h1 class="text-center">Ajouter un produit</h1>
@@ -13,16 +13,12 @@
                 </div>
                 <div class="mb-3">
                     <label for="stockMin" class="form-label">Stock Minimal : </label>
-                    <input type="number" class="form-control" name="stockMin" <?= isset($_POST['stockMin']) ? 'value="' . htmlspecialChars($_POST['stockMin']) . '"' : '' ?>>
+                    <input type="number" id="stockMin" class="form-control" name="stockMin" <?= isset($_POST['stockMin']) ? 'value="' . htmlspecialChars($_POST['stockMin']) . '"' : '' ?>>
                 </div>
                 <div class="mb-3">
                     <label for="stockActual" class="form-label">Stock Actuel : </label>
-                    <input type="number" class="form-control" name="stockActual" <?= isset($_POST['stockActual']) ? 'value="' . htmlspecialChars($_POST['stockActual']) . '"' : '' ?>>
+                    <input type="number" id="stockActual" class="form-control" name="stockActual" <?= isset($_POST['stockActual']) ? 'value="' . htmlspecialChars($_POST['stockActual']) . '"' : '' ?>>
                 </div>
-                <!-- <div class="btn-group mb-3" role="group" aria-label="Basic checkbox toggle button group">
-                    <input type="checkbox" class="btn-check" id="btncheck1" autocomplete="off" name="recurent">
-                    <label class="btn btn-outline-primary" for="btncheck1">Produit Récurrent</label>
-                </div> -->
                 <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="recurent" value="on" name="recurent">
                     <label class="form-check-label" for="recurent">
@@ -43,3 +39,4 @@
         </div>
     </div>
 </div>
+<script src="../assets/js/addProduct.js"></script>

@@ -36,13 +36,25 @@ abstract class Controller
             header("Location: $urlRedirect");
         }
     }
-    
+
+
+    protected function checkPostValues(array $values): bool
+    {
+        foreach ($values as $value) {
+            if (!isset($_POST[$value]) || empty($_POST[$value])) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
     protected function checkFormValues(array $values, array $formValues): bool
     {
         foreach ($values as $value) {
             if (!isset($formValues[$value]) || empty($formValues[$value])) {
-                return false;   
+                return false;
             }
         }
 

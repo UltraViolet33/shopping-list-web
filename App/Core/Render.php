@@ -18,12 +18,13 @@ class Render
     {
         $this->viewPath = $viewPath;
         $this->args = $args;
-        $this->addMessageToArgs();
+        // $this->addMessageToArgs();
     }
 
 
     public function view(): string
     {
+        Session::init();
         ob_start();
         extract($this->args);
         require BASE_VIEW_PATH . 'layouts\header.php';

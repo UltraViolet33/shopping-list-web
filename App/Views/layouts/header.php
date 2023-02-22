@@ -2,7 +2,7 @@
 
 use App\Core\Helpers\Session;
 
-Session::init();
+// Session::init();
 ?>
 <!DOCTYPE html>
 <html lang="fr">

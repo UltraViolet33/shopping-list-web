@@ -32,4 +32,6 @@ if (!is_null(Session::getMessage())) : ?>
     </div>
 </div>
 <script src="assets/js/indexProducts.js"></script>
+<!-- <script src="assets/js/addProduct.js"></script> -->
+
 <!-- <script src="assets/js/updateStock.js"></script> -->
