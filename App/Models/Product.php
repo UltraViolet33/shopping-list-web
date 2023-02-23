@@ -29,14 +29,10 @@ class Product extends Model
     }
 
 
-    /**
-     * selectAll
-     *
-     * @return array
-     */
+
     public function selectAll(): array
     {
-        $query = "SELECT * FROM $this->table";
+        $query = "SELECT * FROM $this->table ORDER BY recurrent";
         return $this->db->read($query);
     }
 

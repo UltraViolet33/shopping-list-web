@@ -262,40 +262,44 @@ class ProductController extends Controller
     }
 
 
-    /**
-     * displayTableProducts
-     * create the html table
-     * @return string
-     */
+
     private function displayTableProducts(): string
     {
         $product = new Product();
         $products = $product->selectAll();
 
         $html = "";
-        $confirm = "Are you sure ?";
 
         foreach ($products as $product) {
+
             $class = "";
-            if ($product->stock_actual <= $product->stock_min) {
-                $class = "bg-danger";
-            }
 
             $html .= '<tr>
-            <td>' . $product->name . ' </td>
-            <td idProduct="' . $product->id_products . '" class="' . $class . '"><button stock="' . $product->stock_actual . '"  type="button" class="btn btn-warning" onclick="updateStock(this)" id="subStockBtn">-</button>
+            <td>' . $product->name . ' </td>';
+
+            if (!$product->recurrent) {
+
+                if ($product->stock_actual <= $product->stock_min) {
+                    $class = "bg-danger";
+                }
+
+                $html .= '<td idProduct="' . $product->id_products . '" class="' . $class . '"><button stock="' . $product->stock_actual . '"  type="button" class="btn btn-warning" onclick="updateStock(this)" id="subStockBtn">-</button>
                 ' . $product->stock_actual . '
                 <button type="button" stock="' . $product->stock_actual . '" class="btn btn-primary addStockBtn" onclick="updateStock(this)" class="addStockBtn">+</button>
-            </td>
-            <td>' . $product->stock_min . '</td>
-            <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/details?id=' . $product->id_products . '">Voir details</a></button></td>
-            
+                </td>
+                <td>' . $product->stock_min . '</td>';
+            } else {
+                $html .= '<td>produit récurrent</td>
+                <td>produit récurrent</td>';
+            }
+
+            $html .= '<td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/details?id=' . $product->id_products . '">Voir details</a></button></td>
             <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Editer</a></button></td>
             <td>
-            <form method="POST" action="/product/delete" onsubmit="return confirm();">
-            <input type="hidden" name="id_product" value="' . $product->id_products . '">
-            <button type="submit" class="btn btn-danger"><a style="color:white; text-decoration:none">Supprimer</a></button>
-            </form>
+                <form method="POST" action="/product/delete" onsubmit="return confirmDelete();">
+                    <input type="hidden" name="id_product" value="' . $product->id_products . '">
+                    <button type="submit" class="btn btn-danger"><a style="color:white; text-decoration:none">Supprimer</a></button>
+                </form>
             </td>
             </tr>';
         }
