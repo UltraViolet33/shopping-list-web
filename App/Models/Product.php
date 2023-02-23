@@ -7,18 +7,11 @@ use App\Core\Database\Database;
 class Product extends Model
 {
 
-    /**
-     * create
-     *
-     * @param  array $data
-     * @return bool
-     */
     public function create(array $data): bool
     {
         $query = "INSERT INTO products(name, stock_min, stock_actual, recurrent) 
         VALUES(:name, :stock_min, :stock_actual, :recurent)";
-
-        return Database::getInstance()->write($query, $data);
+        return $this->db->write($query, $data);
     }
 
 

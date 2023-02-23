@@ -25,12 +25,12 @@ class ProductController extends Controller
 
 
 
-
     private function validateDataForm(): bool
     {
         $values = ["name", "stockActual", "stockMin"];
 
         if (!$this->checkPostValues($values)) {
+            Session::set("error", "please fill all fields");
             return false;
         }
 
@@ -56,64 +56,35 @@ class ProductController extends Controller
 
                 if ($this->validateDataForm()) {
 
-                    // create product and redirect
+                    $values = [
+                        "name" => $_POST["name"],
+                        "stock_min" => (int)$_POST["stockMin"],
+                        "stock_actual" => (int) $_POST["stockActual"],
+                        "recurent" => 0
+                    ];
+
+                    (new Product())->create($values);
+                    header("Location: /");
+                    die;
                 }
             } else {
-                if (isset($_POST['name']) && empty($_POST['name'])) {
-                    // create product recurent and redirect
+                if (isset($_POST['name']) || empty($_POST['name'])) {
+
+                    $values = [
+                        "name" => $_POST["name"],
+                        "stock_min" => null,
+                        "stock_actual" => null,
+                        "recurent" => 1
+                    ];
+
+                    (new Product())->create($values);
+                    header("Location: /");
+                    die;
                 }
 
                 Session::set("error", "Please give a name to the product");
             }
         }
-        // if (!empty($_POST['createProduct'])) {
-
-        //     if (!empty($_POST['name'])) {
-
-        //         $recurent = 0;
-        //         $stockMin = (int) $_POST["stockMin"] ?? 0;
-        //         $stockActual = (int) $_POST["stockActual"] ?? 0;
-
-        //         if ($stockActual < 0 || $stockActual > 100) {
-        //             $this->setMsgErrors("Stock actual must be >= 0 and < 100");
-        //         }
-
-
-        //         if ($stockMin < 0 || $stockMin > 100) {
-        //             $this->setMsgErrors("Stock minimal must be >= 0 and < 100");
-        //         }
-
-
-        //         if (isset($_POST['recurent'])) {
-        //             if ($_POST['recurent'] !== "on") {
-        //                 $this->setMsgErrors("Mauvaise valeur pour 'Produit Récurent' <br>");
-        //             } else {
-        //                 $recurent = 1;
-        //             }
-        //         }
-
-        //         if (strlen($this->getMsgErrors()) === 0) {
-        //             $data = [];
-
-        //             $data["name"] = $_POST["name"];
-        //             $data['stock_min'] = $stockMin;
-        //             $data['stock_actual'] = $stockActual;
-        //             $data['recurent'] = $recurent;
-
-        //             if ((new Product())->create($data)) {
-        //                 Session::init();
-        //                 Session::setMessage("Produit créé avec succès !");
-        //                 header("Location: /");
-        //                 return null;
-        //             }
-        //         }
-        //     } else {
-        //         $this->setMsgErrors("Veuillez remplir tous les champs ! <br>");
-        //     }
-        // }
-
-        // $errors = $this->getMsgErrors();
-        // $this->setMsgErrors(null);
 
         return Render::make("Products/add");
     }

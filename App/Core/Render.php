@@ -18,13 +18,13 @@ class Render
     {
         $this->viewPath = $viewPath;
         $this->args = $args;
-        // $this->addMessageToArgs();
+        $this->addMessageToArgs();
     }
 
 
     public function view(): string
     {
-        Session::init();
+        $errors = Session::get("error");
         ob_start();
         extract($this->args);
         require BASE_VIEW_PATH . 'layouts\header.php';
@@ -48,7 +48,6 @@ class Render
 
     private function addMessageToArgs(): void
     {
-        Session::init();
         $msg = Session::getMessage();
         if ($msg) {
             $this->args['msg'] = $msg;
