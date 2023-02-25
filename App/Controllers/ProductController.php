@@ -134,18 +134,16 @@ class ProductController extends Controller
     }
 
 
-    public function delete()
+    public function delete(): void
     {
         if (!isset($_POST['id_product']) || !is_numeric($_POST['id_product'])) {
             header("Location: /");
-            return null;
+            die;
         }
 
-        $productModel = new Product();
-        $productModel->delete($_POST['id_product']);
-
+        $this->productModel->delete($_POST['id_product']);
         header("Location: /");
-        return null;
+        die;
     }
 
 

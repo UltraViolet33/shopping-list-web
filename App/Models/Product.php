@@ -67,15 +67,11 @@ class Product extends Model
     //     return $this->db->readOneRow($query, ['id_product' => $id]);
     // }
 
-    /**
-     * deleteProduct
-     *
-     * @param  int $id
-     * @return bool
-     */
+    
+
     public function delete(int $id): bool
     {
-        $query = "DELETE FROM $this->table WHERE id_products = :id_product";
+        $query = "DELETE FROM $this->table WHERE id_product = :id_product";
         return $this->db->write($query, ['id_product' => $id]);
     }
 
