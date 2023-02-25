@@ -15,17 +15,12 @@ class Product extends Model
     }
 
 
-    /**
-     * update
-     *
-     * @param  array $data
-     * @return bool
-     */
+
     public function update(array $data): bool
     {
         $query = "UPDATE products SET name = :name, stock_min = :stock_min, stock_actual = :stock_actual, recurrent = :recurrent
-        WHERE id_products = :id_products";
-        return Database::getInstance()->write($query, $data);
+        WHERE id_product = :id_product";
+        return $this->db->write($query, $data);
     }
 
 
@@ -65,17 +60,12 @@ class Product extends Model
         return $this->db->read($query);
     }
 
-    /**
-     * getSingleProduct
-     *
-     * @param  int $idProduct
-     * @return object
-     */
-    public function getSingleProduct(int $idProduct): object
-    {
-        $query = "SELECT * FROM $this->table WHERE id_products = :id_product";
-        return $this->db->read($query, ['id_product' => $idProduct])[0];
-    }
+
+    // public function getSingleProduct(int $id): object
+    // {
+    //     $query = "SELECT * FROM $this->table WHERE id_product = :id_product";
+    //     return $this->db->readOneRow($query, ['id_product' => $id]);
+    // }
 
     /**
      * deleteProduct

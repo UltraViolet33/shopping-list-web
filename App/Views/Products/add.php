@@ -39,4 +39,4 @@
         </div>
     </div>
 </div>
-<script src="../assets/js/addProduct.js"></script>
+<script src="../assets/js/formProduct.js"></script>

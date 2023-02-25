@@ -161,47 +161,46 @@ class ProductController extends Controller
 
     public function update(): Render
     {
-        if (!isset($_GET['id'])) {
-            return '404';
-        }
-
-
-        if (!empty($_POST['editProduct'])) {
-            if ($this->checkPostValues()) {
-
-                $data = [];
-                $data['id_products'] = $_GET["id"];
-                $data['name'] = $_POST["name"];
-
-                $data['stock_min'] = (int)$_POST["stockMin"];
-                $data['stock_actual'] = (int)$_POST["stockActual"];
-                $data['recurrent'] = 0;
-
-                if (isset($_POST['recurent'])) {
-                    if ($_POST['recurent'] == "on") {
-                        $data['recurrent'] = 1;
-                    }
-                }
-
-                if ((new Product())->update($data)) {
-                    Session::init();
-                    Session::setMessage("Produit modifié avec succès !");
-                    header("Location: /");
-                    return null;
-                }
-            }
-
-            var_dump($this->msgErrors);
-        }
-
+        $this->checkIdUrl("/");
         $idProduct = (int)$_GET['id'];
 
-        $productModel = new Product();
-        $singleProduct = $productModel->getSingleProduct($idProduct);
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if (!isset($_POST['recurent'])) {
+                if ($this->validateDataForm()) {
 
-        $errors = $this->getMsgErrors();
-        $this->setMsgErrors(null);
-        return Render::make("Products/edit", compact('singleProduct', "errors"));
+                    $values = [
+                        "id_product" => $idProduct,
+                        "name" => $_POST["name"],
+                        "stock_min" => (int)$_POST["stockMin"],
+                        "stock_actual" => (int) $_POST["stockActual"],
+                        "recurrent" => 0
+                    ];
+
+                    $this->productModel->update($values);
+                    header("Location: /");
+                    die;
+                }
+            } else {
+                if (isset($_POST['name']) || empty($_POST['name'])) {
+
+                    $values = [
+                        "id_product" => $idProduct,
+                        "name" => $_POST["name"],
+                        "stock_min" => null,
+                        "stock_actual" => null,
+                        "recurrent" => 1
+                    ];
+
+                    $this->productModel->update($values);
+                    header("Location: /");
+                    die;
+                }
+                Session::set("error", "Please give a name to the product");
+            }
+        }
+
+        $singleProduct = $this->productModel->selectOneById($idProduct);
+        return Render::make("Products/edit", compact('singleProduct'));
     }
 
 
