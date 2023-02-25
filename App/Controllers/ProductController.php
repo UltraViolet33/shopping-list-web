@@ -9,6 +9,14 @@ use App\Models\Store;
 
 class ProductController extends Controller
 {
+    private Product $productModel;
+
+
+    public function __construct()
+    {
+        $this->productModel = new Product();
+    }
+
 
     public function index(): Render
     {
@@ -141,16 +149,12 @@ class ProductController extends Controller
     }
 
 
-    /**
-     * showDetails
-     *
-     * @return Render
-     */
+
     public function showDetails(): Render
     {
         $this->checkIdUrl("/");
-        $singleProduct = (new Product())->selectOneById($_GET["id"]);
-        $storesProduct = (new Product())->selectStoresAndPrice($_GET["id"]);
+        $singleProduct = $this->productModel->selectOneById($_GET["id"]);
+        $storesProduct = $this->productModel->selectStoresAndPrice($_GET["id"]);
         return Render::make("Products/details", compact("singleProduct", "storesProduct"));
     }
 
@@ -283,7 +287,7 @@ class ProductController extends Controller
                     $class = "bg-danger";
                 }
 
-                $html .= '<td idProduct="' . $product->id_products . '" class="' . $class . '"><button stock="' . $product->stock_actual . '"  type="button" class="btn btn-warning" onclick="updateStock(this)" id="subStockBtn">-</button>
+                $html .= '<td idProduct="' . $product->id_product . '" class="' . $class . '"><button stock="' . $product->stock_actual . '"  type="button" class="btn btn-warning" onclick="updateStock(this)" id="subStockBtn">-</button>
                 ' . $product->stock_actual . '
                 <button type="button" stock="' . $product->stock_actual . '" class="btn btn-primary addStockBtn" onclick="updateStock(this)" class="addStockBtn">+</button>
                 </td>
@@ -293,11 +297,11 @@ class ProductController extends Controller
                 <td>produit récurrent</td>';
             }
 
-            $html .= '<td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/details?id=' . $product->id_products . '">Voir details</a></button></td>
-            <td><button type="button" class="btn btn-secondary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_products . '">Editer</a></button></td>
+            $html .= '<td><button type="button" class="btn btn-primary"><a style="color:white; text-decoration:none" href="/product/details?id=' . $product->id_product . '">Voir details</a></button></td>
+            <td><button type="button" class="btn btn-primary"><a style="color:white; text-decoration:none" href="/product/update?id=' . $product->id_product . '">Editer</a></button></td>
             <td>
                 <form method="POST" action="/product/delete" onsubmit="return confirmDelete();">
-                    <input type="hidden" name="id_product" value="' . $product->id_products . '">
+                    <input type="hidden" name="id_product" value="' . $product->id_product . '">
                     <button type="submit" class="btn btn-danger"><a style="color:white; text-decoration:none">Supprimer</a></button>
                 </form>
             </td>

@@ -19,8 +19,10 @@
                 <tbody>
                     <tr>
                         <th><?= $singleProduct->name ?></th>
-                        <th><?= $singleProduct->stock_actual ?></th>
-                        <th><?= $singleProduct->stock_min ?></th>
+                        <th><?= $singleProduct->stock_actual ?? "produit récurrent" ?></th>
+                        <th><?= $singleProduct->stock_min ?? "produit récurrent" ?></th>
+                        <th><button class="btn btn-primary">Modifier</button></th>
+                        <th><button class="btn btn-danger">Supprimer</button></th>
                     </tr>
                 </tbody>
             </table>

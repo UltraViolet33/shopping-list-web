@@ -53,7 +53,6 @@ window.addEventListener("load", event => {
   getProducts();
 });
 
-
 function confirmDelete() {
   return confirm("Voulez vous vraiment supprimer ce produit ?");
 }

@@ -46,7 +46,7 @@ class Product extends Model
      */
     public function updateStock(int $id, int $stock): bool
     {
-        $query = "UPDATE products SET stock_actual = :stock WHERE id_products = :id";
+        $query = "UPDATE products SET stock_actual = :stock WHERE id_product = :id";
         $data['id'] = $id;
         $data['stock'] = $stock;
 
@@ -89,18 +89,11 @@ class Product extends Model
         return $this->db->write($query, ['id_product' => $id]);
     }
 
-    /**
-     * selectOneById
-     *
-     * @param  int $id
-     * @return object
-     */
+
     public function selectOneById(int $id): object
     {
-        $query = "SELECT * FROM $this->table as prod
-         WHERE prod.id_products = :id_products";
-
-        return $this->db->readOneRow($query, ['id_products' => $id]);
+        $query = "SELECT * FROM $this->table WHERE id_product = :id_product";
+        return $this->db->readOneRow($query, ['id_product' => $id]);
     }
 
 
@@ -123,7 +116,7 @@ class Product extends Model
      * @param  int $id
      * @return array | bool
      */
-    public function selectStoresAndPrice(int $id): array|bool
+    public function selectStoresAndPrice(int $id): array
     {
         $query = "SELECT prices.amount, stores.name FROM prices 
         INNER JOIN stores ON stores.id_stores = prices.id_stores WHERE prices.id_products = :id_products";
