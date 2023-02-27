@@ -18,13 +18,13 @@
                     <?php foreach ($allStores as $store) : ?>
                         <tr>
                             <td><?= $store->name ?></td>
-                            <td><a href="/store/edit?id=<?= $store->id_stores ?>">Modifier</a></td>
+                            <td><a href="/store/edit?id=<?= $store->id_store ?>">Modifier</a></td>
                             <td>
                                 <form method="POST" action="store/delete">
-                                    <input type="hidden" value="<?= $store->id_stores ?>" name="id_store">
+                                    <input type="hidden" value="<?= $store->id_store ?>" name="id_store">
                                     <button onclick="return confirm('Are you sure ?')" class="btn btn-primary" type="submit">Supprimer</button>
+                                </form>
                             </td>
-                            </form>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

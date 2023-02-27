@@ -21,7 +21,7 @@ class StoreController extends Controller
 
     public function index()
     {
-        $allStores = (new Store())->selectAll();
+        $allStores = $this->storeModel->selectAll();
         return Render::make("Stores/index", compact('allStores'));
     }
 
@@ -45,32 +45,23 @@ class StoreController extends Controller
 
     public function update(): Render
     {
-        // if(!isset($_GET["id"]) || !is_numeric($_GET["id"]))
-        // {
-        //     header("Location: /stores");
-        // }
+        $this->checkIdUrl("/stores");
 
-        //select single store
-        $singleStore = (new Store())->selectOneById($_GET["id"]);
+        $singleStore = $this->storeModel->selectOneById($_GET["id"]);
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (strlen($_POST["name"]) > 1) {
-                $data = ["id_stores" => $singleStore->id_stores, "name" => Format::cleanInput($_POST["name"])];
 
-                if ((new Store())->update($data)) {
-                    Session::init();
-                    Session::setMessage("Magasin créé avec succès !");
-                    header("Location: /stores");
-                    return null;
-                }
+            if ($this->checkPostValues(["name"])) {
+                $data = ["name" => $_POST["name"], "id_store" => $_GET["id"]];
+                $this->storeModel->update($data);
+                header("Location: /stores");
+                die;
             }
 
-            $this->setMsgErrors("Veuillez remplir tous les champs ! <br>");
+            Session::set("error", "Please give a name to the store");
         }
 
-        $errors = $this->getMsgErrors();
-        $this->setMsgErrors(null);
-        return Render::make("Stores/edit", compact("singleStore", "errors"));
+        return Render::make("Stores/edit", compact("singleStore"));
     }
 
 
