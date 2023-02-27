@@ -9,11 +9,16 @@ use App\Models\Store;
 
 class StoreController extends Controller
 {
-    /**
-     * index
-     *
-     * @return Render
-     */
+
+    private Store $storeModel;
+
+
+    public function __construct()
+    {
+        $this->storeModel = new Store();
+    }
+
+
     public function index()
     {
         $allStores = (new Store())->selectAll();
@@ -21,33 +26,20 @@ class StoreController extends Controller
     }
 
 
-    /**
-     * index
-     *
-     * @return Render
-     */
     public function create(): Render
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            if (strlen($_POST['name']) > 0) {
-                $data = ["name" => Format::cleanInput($_POST["name"])];
 
-                if ((new Store())->create($data)) {
-                    Session::init();
-                    Session::setMessage("Magasin créé avec succès !");
-                    header("Location: /stores");
-                    return null;
-                }
-
-                $this->setMsgErrors("Une erreur s'est produite ! <br>");
+            if ($this->checkPostValues(["name"])) {
+                $this->storeModel->create(["name" => $_POST["name"]]);
+                header("Location: /stores");
+                die;
             }
 
-            $this->setMsgErrors("Le nom du magasin doit faire au moins 1 lettre ! <br>");
+            Session::set("error", "Please give a name to the store");
         }
 
-        $errors = $this->getMsgErrors();
-        $this->setMsgErrors(null);
-        return Render::make("Stores/add", compact("errors"));
+        return Render::make("Stores/add");
     }
 
 

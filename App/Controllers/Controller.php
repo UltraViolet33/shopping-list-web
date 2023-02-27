@@ -50,14 +50,14 @@ abstract class Controller
     }
 
 
-    protected function checkFormValues(array $values, array $formValues): bool
-    {
-        foreach ($values as $value) {
-            if (!isset($formValues[$value]) || empty($formValues[$value])) {
-                return false;
-            }
-        }
+    // protected function checkFormValues(array $values, array $formValues): bool
+    // {
+    //     foreach ($values as $value) {
+    //         if (!isset($formValues[$value]) || empty($formValues[$value])) {
+    //             return false;
+    //         }
+    //     }
 
-        return true;
-    }
+    //     return true;
+    // }
 }
