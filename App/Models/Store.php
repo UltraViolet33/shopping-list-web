@@ -51,15 +51,9 @@ class Store extends Model
     }
 
 
-    /**
-     * delete
-     *
-     * @param int $id
-     * @return bool
-     */
     public function delete(int $id): bool
     {
-        $query = "DELETE FROM $this->table WHERE id_stores = :id_stores";
-        return $this->db->write($query, ["id_stores" => $id]);
+        $query = "DELETE FROM $this->table WHERE id_store = :id_store";
+        return $this->db->write($query, ["id_store" => $id]);
     }
 }

@@ -65,24 +65,13 @@ class StoreController extends Controller
     }
 
 
-    /**
-     * delete
-     *
-     * @return void
-     */
+
     public function delete(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if (isset($_POST["id_store"]) && !empty($_POST["id_store"])) {
-
-                $id_store = $_POST["id_store"];
-
-                $storeModel = new Store();
-                $store = $storeModel->selectOneById($id_store);
-                if ($store) {
-                    $storeModel->delete($id_store);
-                }
+            if ($this->checkPostValues(["id_store"])) {
+                $this->storeModel->delete($_POST["id_store"]);
             }
         }
 
