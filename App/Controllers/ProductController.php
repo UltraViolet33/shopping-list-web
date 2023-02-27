@@ -11,10 +11,13 @@ class ProductController extends Controller
 {
     private Product $productModel;
 
+    private Store $storeModel;
+
 
     public function __construct()
     {
         $this->productModel = new Product();
+        $this->storeModel = new Store();
     }
 
 
@@ -202,64 +205,27 @@ class ProductController extends Controller
     }
 
 
-    /**
-     * addStoreToProduct
-     *
-     * @return void
-     */
-    public function addStoreToProduct()
+
+    public function addStoreToProduct(): Render
     {
         $this->checkIdUrl("/");
         $idProduct = (int)$_GET['id'];
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            var_dump($_POST);
             $valuesToCheck = ["store", "price"];
-            if ($this->checkFormValues($valuesToCheck, $_POST)) {
-
-                //add the store to the product
-                $data = ["id_products" => $idProduct, "id_stores" => $_POST["store"], "amount" => $_POST["price"]];
-
-                (new Product())->addStoreToProduct($data);
-                header("Location: /");
-            } else {
-
-                $this->setMsgErrors("Veuillez remplir tout les champs !<br>");
-            }
-        }
-
-        $productModel = new Product();
-        $singleProduct = $productModel->getSingleProduct($idProduct);
-
-        $allStores = (new Store())->selectAll();
-
-        $storesProduct = $productModel->getAllStoresProduct($idProduct);
-
-        if ($storesProduct) {
-            $stores = [];
-
-            foreach ($allStores as $store) {
-                $insert = true;
-
-                foreach ($storesProduct as $storeProduct) {
-                    if ($store->id_stores == $storeProduct->id_stores) {
-                        $insert = false;
-                    }
-                }
-
-                if ($insert) {
-                    $stores[] = $store;
-                }
+            if ($this->checkPostValues($valuesToCheck, $_POST)) {
+                $data = ["id_product" => $idProduct, "id_store" => $_POST["store"], "amount" => $_POST["price"]];
+                $this->productModel->addStoreToProduct($data);
+                header("Location: /product/details?id=" . $idProduct);
             }
 
-            $allStores = $stores;
+            Session::set("error", "Veuillez remplir tout les champs !<br>");
         }
 
+        $singleProduct = $this->productModel->selectOneById($idProduct);
+        $storesLeftProduct = $this->storeModel->selectStoresLeftFromProduct($idProduct);
 
-        $errors = $this->getMsgErrors();
-        $this->setMsgErrors(null);
-
-        return Render::make("Products/addStore", compact("singleProduct", "allStores", "errors"));
+        return Render::make("Products/addStore", compact("singleProduct", "storesLeftProduct"));
     }
 
 
@@ -307,35 +273,4 @@ class ProductController extends Controller
 
         return $html;
     }
-
-
-
-
-
-    // public function checkPostValues()
-    // {
-    //     if (!empty($_POST['name']) && !empty($_POST['stockMin']) && !empty($_POST['stockActual'])) {
-    //         if (!is_numeric($_POST['stockMin'])) {
-    //             $this->setMsgErrors("Le stock minimale doit être un nombre ! <br>");
-    //             return false;
-    //         }
-
-    //         if (!is_numeric($_POST['stockActual'])) {
-    //             $this->setMsgErrors("Le stock actuel doit être un nombre ! <br>");
-    //             return false;
-    //         }
-
-    //         if (isset($_POST['recurent'])) {
-    //             if ($_POST['recurent'] !== "on") {
-    //                 $this->setMsgErrors("Mauvaise valeur pour 'Produit Récurent' <br>");
-    //                 return false;
-    //             }
-    //         }
-
-    //         return true;
-    //     } else {
-    //         $this->setMsgErrors("Veuillez remplir tous les champs ! <br>");
-    //         return false;
-    //     }
-    // }
 }

@@ -83,43 +83,34 @@ class Product extends Model
     }
 
 
-    /**
-     * addStoreToProduct
-     *
-     * @param  array $data
-     * @return bool
-     */
     public function addStoreToProduct(array $data): bool
     {
-        $query = "INSERT INTO prices(amount, id_products, id_stores) VALUES(:amount, :id_products, :id_stores)";
+        $query = "INSERT INTO prices(amount, id_product, id_store) VALUES(:amount, :id_product, :id_store)";
         return $this->db->write($query, $data);
     }
 
 
-    /**
-     * selectStoresAndPrice
-     *
-     * @param  int $id
-     * @return array | bool
-     */
     public function selectStoresAndPrice(int $id): array
     {
         $query = "SELECT prices.amount, stores.name FROM prices 
-        INNER JOIN stores ON stores.id_stores = prices.id_stores WHERE prices.id_products = :id_products";
-        return $this->db->read($query, ["id_products" => $id]);
+        INNER JOIN stores ON stores.id_store = prices.id_store WHERE prices.id_product = :id_product";
+        return $this->db->read($query, ["id_product" => $id]);
     }
 
 
-    /**
-     * getAllStoresProduct
-     *
-     * @param  int $id
-     * @return array | bool
-     */
-    public function getAllStoresProduct(int $id): array|bool
+    
+    public function getAllStoresProduct(int $id): array
     {
-        $query = "SELECT id_stores FROM prices WHERE id_products = :id_products";
-        return $this->db->read($query, ["id_products" => $id]);
+        $query = "SELECT id_store FROM prices WHERE id_product = :id_product";
+        return $this->db->read($query, ["id_product" => $id]);
+    }
+
+
+    public function getAllStoresFromProduct(int $id): array
+    {
+        $query = "SELECT prices.id_store, stores.name  FROM prices 
+        INNER JOIN stores ON stores.id_store = prices.id_store WHERE prices.id_product = :id_product";
+        return $this->db->read($query, ["id_product" => $id]);
     }
 
     /**
@@ -130,7 +121,7 @@ class Product extends Model
      */
     public function selectPriceByStoreAndProduct(array $data): bool|object
     {
-        $query = "SELECT amount FROM prices WHERE id_products = :id_products AND id_stores = :id_stores";
+        $query = "SELECT amount FROM prices WHERE id_products = :id_products AND id_store = :id_store";
         return $this->db->readOneRow($query, $data);
     }
 
@@ -144,7 +135,7 @@ class Product extends Model
         $query = "SELECT products.name, products.id_products, GROUP_CONCAT(stores.name,',', prices.amount) AS prices_stores,
         (products.stock_min - products.stock_actual + 1)  AS number_item
                   FROM products, prices, stores WHERE products.id_products = prices.id_products
-                AND stores.id_stores = prices.id_stores AND products.stock_actual <= products.stock_min
+                AND stores.id_store = prices.id_store AND products.stock_actual <= products.stock_min
                 GROUP BY products.id_products, products.name";
 
         return $this->db->read($query);

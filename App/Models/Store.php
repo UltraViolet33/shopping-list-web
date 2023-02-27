@@ -35,6 +35,29 @@ class Store extends Model
         return $this->db->write($query, $data);
     }
 
+
+    public function selectStoresLeftFromProduct(int $idProduct): array
+    {
+        $productStoresId = $this->getStoresIdFromProduct($idProduct);
+        $query = "SELECT * FROM stores WHERE id_store NOT IN (" . implode(",", $productStoresId).")";
+        return $this->db->read($query);
+    }
+
+
+    public function getStoresIdFromProduct(int $idProduct): array
+    {
+        $query = "SELECT id_store FROM prices WHERE id_product = :id_product";
+        $result = $this->db->read($query, ["id_product" => $idProduct]);
+
+        $idStores = [];
+
+        foreach ($result as $item) {
+            $idStores[] = $item->id_store;
+        }
+
+        return $idStores;
+    }
+
     /**
      * selectStoresByProducts
      *
