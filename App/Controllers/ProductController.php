@@ -229,6 +229,19 @@ class ProductController extends Controller
     }
 
 
+    public function editStoreProduct(): Render
+    {
+        if (!isset($_GET["idproduct"]) || !isset($_GET["idstore"])) {
+            header("Location: /");
+            die;
+        }
+
+        
+
+        return Render::make("Products/editStore");
+    }
+
+
 
     private function displayTableProducts(): string
     {

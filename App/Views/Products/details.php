@@ -33,12 +33,14 @@
                         <tr>
                             <th scope="col">Nom</th>
                             <th scope="col">Prix</th>
+                            <th scope="col">Modifier</th>
                         </tr>
                     </thead>
                     <?php foreach ($storesProduct as $store) : ?>
                         <tr>
                             <th><?= $store->name ?></th>
                             <th><?= $store->amount ?> €</th>
+                            <th><a href="/product/store/edit?idproduct=<?= $singleProduct->id_product ?>&idstore=<?= $store->id_store ?>" class="btn btn-primary">Modifier</a></th>
                         </tr>
                     <?php endforeach; ?>
                 </table>
