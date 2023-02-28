@@ -92,7 +92,7 @@ class Product extends Model
 
     public function selectStoresAndPrice(int $id): array
     {
-        $query = "SELECT prices.amount, stores.name, stores.id_store FROM prices 
+        $query = "SELECT prices.amount, prices.id_price, stores.name, stores.id_store FROM prices 
         INNER JOIN stores ON stores.id_store = prices.id_store WHERE prices.id_product = :id_product";
         return $this->db->read($query, ["id_product" => $id]);
     }

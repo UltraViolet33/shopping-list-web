@@ -34,6 +34,7 @@
                             <th scope="col">Nom</th>
                             <th scope="col">Prix</th>
                             <th scope="col">Modifier</th>
+                            <th scope="col">Supprimer</th>
                         </tr>
                     </thead>
                     <?php foreach ($storesProduct as $store) : ?>
@@ -41,6 +42,12 @@
                             <th><?= $store->name ?></th>
                             <th><?= $store->amount ?> €</th>
                             <th><a href="/product/store/edit?idproduct=<?= $singleProduct->id_product ?>&idstore=<?= $store->id_store ?>" class="btn btn-primary">Modifier</a></th>
+                            <td>
+                                <form method="POST" action="/price/delete">
+                                    <input type="hidden" value="<?= $store->id_price ?>" name="id_price">
+                                    <button onclick="return confirm('Are you sure ?')" class="btn btn-danger" type="submit">Supprimer</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
