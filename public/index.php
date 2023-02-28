@@ -24,6 +24,8 @@ $router->get("/product/addStore", ["App\Controllers\ProductController", 'addStor
 $router->post("/product/addStore", ["App\Controllers\ProductController", 'addStoreToProduct']);
 
 $router->get("/product/store/edit", ["App\Controllers\ProductController", 'editStoreProduct']);
+$router->post("/product/store/edit", ["App\Controllers\ProductController", 'editStoreProduct']);
+
 
 
 // List

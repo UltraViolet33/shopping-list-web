@@ -10,7 +10,6 @@ use App\Models\Store;
 class ProductController extends Controller
 {
     private Product $productModel;
-
     private Store $storeModel;
 
 
@@ -236,9 +235,24 @@ class ProductController extends Controller
             die;
         }
 
-        
+        $product = $this->productModel->selectOneById($_GET["idproduct"]);
+        $store = $this->storeModel->selectOneById($_GET["idstore"]);
 
-        return Render::make("Products/editStore");
+        $values = ["id_store" => $store->id_store, "id_product" => $product->id_product];
+        $price = $this->storeModel->selectPriceFromProductAndStore($values);
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if ($this->checkPostValues(['price'])) {
+                $values["amount"] = $_POST["price"];
+                $this->storeModel->updatePrice($values);
+                header("Location: /product/details?id=" . $product->id_product);
+                die;
+            }
+
+            Session::set("error", "Il fault un prix !");
+        }
+
+        return Render::make("Products/editStore",  compact("product", "store", "price"));
     }
 
 
