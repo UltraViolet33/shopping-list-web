@@ -1,11 +1,3 @@
-<?php
-
-use App\Core\Helpers\Session;
-
-if (!is_null(Session::getMessage())) : ?>
-    <?php echo Session::getMessage(); ?>
-    <?php Session::unset('msg'); ?>
-<?php endif; ?>
 <div class="container my-3">
     <div class="row">
         <div class="col-12">
@@ -32,6 +24,4 @@ if (!is_null(Session::getMessage())) : ?>
     </div>
 </div>
 <script src="assets/js/indexProducts.js"></script>
-<!-- <script src="assets/js/addProduct.js"></script> -->
 
-<!-- <script src="assets/js/updateStock.js"></script> -->

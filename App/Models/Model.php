@@ -6,32 +6,54 @@ use App\Core\Database\Database;
 
 abstract class Model
 {
-    protected  Database $db;
+    protected Database $db;
     protected string $table;
-
+    protected string $id;
 
     public function __construct()
     {
         $this->db = Database::getInstance();
-        // $this->table = get_class($this);
-        $this->table = $this->getTableName();
+        $this->table = $this->setTableName();
+        $this->id = $this->setId();
     }
 
-
-    private function getTableName(): string
-    {
-        $table = get_class($this);
-        $table = strtolower(explode("\\", get_class($this))[2] . 's');
-        return $table;
-    }
 
     abstract protected function create(array $data): bool;
 
     abstract protected function update(array $data): bool;
 
-    abstract protected function selectAll(): array;
 
-    abstract protected function selectOneById(int $id): object;
+    public function selectOneById(int $id): object
+    {
+        $query = "SELECT * FROM $this->table WHERE $this->id = :id";
+        return $this->db->readOneRow($query, ["id" => $id]);
+    }
 
-    abstract protected function delete(int $id): bool;
+
+    public function selectAll(): array
+    {
+        $query = "SELECT * FROM $this->table";
+        return $this->db->read($query);
+    }
+
+
+    public function delete(int $id): bool
+    {
+        $query = "DELETE FROM $this->table WHERE $this->id = :id";
+        return $this->db->write($query, ["id" => $id]);
+    }
+
+
+    private function setTableName(): string
+    {
+        $table = get_class($this);
+        return strtolower(explode("\\", get_class($this))[2] . 's');
+    }
+
+    private function setId(): string
+    {
+        $table = get_class($this);
+        $table = strtolower(explode("\\", get_class($this))[2]);
+        return "id_" . $table;
+    }
 }

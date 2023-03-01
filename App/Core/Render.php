@@ -18,7 +18,6 @@ class Render
     {
         $this->viewPath = $viewPath;
         $this->args = $args;
-        $this->addMessageToArgs();
     }
 
 
@@ -43,14 +42,5 @@ class Render
     public function __toString(): string
     {
         return $this->view();
-    }
-
-
-    private function addMessageToArgs(): void
-    {
-        $msg = Session::getMessage();
-        if ($msg) {
-            $this->args['msg'] = $msg;
-        }
     }
 }

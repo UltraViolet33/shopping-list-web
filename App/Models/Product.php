@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Model;
 use App\Core\Database\Database;
 
 class Product extends Model
@@ -15,21 +16,11 @@ class Product extends Model
     }
     
 
-
-
     public function update(array $data): bool
     {
         $query = "UPDATE products SET name = :name, stock_min = :stock_min, stock_actual = :stock_actual, recurrent = :recurrent
         WHERE id_product = :id_product";
         return $this->db->write($query, $data);
-    }
-
-
-
-    public function selectAll(): array
-    {
-        $query = "SELECT * FROM $this->table ORDER BY recurrent";
-        return $this->db->read($query);
     }
 
 
@@ -59,28 +50,6 @@ class Product extends Model
     {
         $query = "SELECT * , (stock_min - stock_actual + 1) AS number_item FROM $this->table WHERE stock_actual <= stock_min";
         return $this->db->read($query);
-    }
-
-
-    // public function getSingleProduct(int $id): object
-    // {
-    //     $query = "SELECT * FROM $this->table WHERE id_product = :id_product";
-    //     return $this->db->readOneRow($query, ['id_product' => $id]);
-    // }
-
-    
-
-    public function delete(int $id): bool
-    {
-        $query = "DELETE FROM $this->table WHERE id_product = :id_product";
-        return $this->db->write($query, ['id_product' => $id]);
-    }
-
-
-    public function selectOneById(int $id): object
-    {
-        $query = "SELECT * FROM $this->table WHERE id_product = :id_product";
-        return $this->db->readOneRow($query, ['id_product' => $id]);
     }
 
 
