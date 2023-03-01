@@ -13,11 +13,22 @@ class Session
     }
 
 
+    public static function setErrorMsg(string $value): void
+    {
+        self::set("error", $value);
+    }
+
+
+    public static function getErrorMsg(): string|bool
+    {
+        return self::get("error");
+    }
+
+
     public static function set(string $key, string $value): void
     {
         $_SESSION[$key] = $value;
     }
-
 
 
     public static function get(string $key): string|bool
@@ -27,20 +38,6 @@ class Session
         }
 
         return false;
-    }
-
-
-    public static function setMessage(string $value): void
-    {
-        $_SESSION['msg'] = $value;
-        var_dump($_SESSION);
-    }
-
-
-    public static function getMessage(): string|bool
-    {
-        $msg = self::get('msg');
-        return $msg;
     }
 
 
