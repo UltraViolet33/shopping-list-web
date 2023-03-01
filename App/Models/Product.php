@@ -13,6 +13,7 @@ class Product extends Model
         VALUES(:name, :stock_min, :stock_actual, :recurent)";
         return $this->db->write($query, $data);
     }
+    
 
 
 
