@@ -34,30 +34,6 @@ class ProductController extends Controller
     }
 
 
-
-    private function validateDataForm(): bool
-    {
-        $values = ["name", "stockActual", "stockMin"];
-
-        if (!$this->checkPostValues($values)) {
-            Session::set("error", "please fill all fields");
-            return false;
-        }
-
-        if ((int) $_POST['stockMin'] < 0 || (int) $_POST['stockMin'] > 100) {
-            Session::set("error", "Stock Minimal must be between 1 and 99");
-            return false;
-        }
-
-        if ((int) $_POST['stockActual'] < 0 || (int) $_POST['stockActual'] > 100) {
-            Session::set("error", "Stock Actual must be between 1 and 99");
-            return false;
-        }
-
-        return true;
-    }
-
-
     public function create(): Render
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -99,6 +75,28 @@ class ProductController extends Controller
         return Render::make("Products/add");
     }
 
+
+    private function validateDataForm(): bool
+    {
+        $values = ["name", "stockActual", "stockMin"];
+
+        if (!$this->checkPostValues($values)) {
+            Session::set("error", "please fill all fields");
+            return false;
+        }
+
+        if ((int) $_POST['stockMin'] < 0 || (int) $_POST['stockMin'] > 100) {
+            Session::set("error", "Stock Minimal must be between 1 and 99");
+            return false;
+        }
+
+        if ((int) $_POST['stockActual'] < 0 || (int) $_POST['stockActual'] > 100) {
+            Session::set("error", "Stock Actual must be between 1 and 99");
+            return false;
+        }
+
+        return true;
+    }
 
 
     /**
@@ -202,7 +200,6 @@ class ProductController extends Controller
         $singleProduct = $this->productModel->selectOneById($idProduct);
         return Render::make("Products/edit", compact('singleProduct'));
     }
-
 
 
     public function addStoreToProduct(): Render

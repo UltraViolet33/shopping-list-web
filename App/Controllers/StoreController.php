@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use App\Core\Render;
 use App\Core\Helpers\Session;
-use App\Core\Helpers\Format;
 use App\Models\Store;
 
 class StoreController extends Controller
@@ -19,7 +18,7 @@ class StoreController extends Controller
     }
 
 
-    public function index()
+    public function index(): Render
     {
         $allStores = $this->storeModel->selectAll();
         return Render::make("Stores/index", compact('allStores'));

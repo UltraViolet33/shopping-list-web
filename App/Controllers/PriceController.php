@@ -3,8 +3,6 @@
 namespace App\Controllers;
 
 use App\Core\Render;
-use App\Core\Helpers\Session;
-use App\Models\Product;
 use App\Models\Price;
 
 class PriceController extends Controller
@@ -16,6 +14,19 @@ class PriceController extends Controller
     {
         $this->priceModel = new Price();
     }
+
+
+    public function index(): Render 
+    {
+        return Render::make("prices/index");
+    }
+
+
+    public function create(): Render 
+    {
+        return Render::make("prices/add");
+    }
+
 
 
     public function delete(): void

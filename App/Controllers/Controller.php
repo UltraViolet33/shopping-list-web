@@ -9,7 +9,15 @@ abstract class Controller
 
     abstract protected function update(): Render;
 
-    
+
+    abstract protected function index(): Render;
+
+
+    abstract protected function create(): Render;
+
+
+    abstract protected function delete(): void;
+
 
     protected function checkIdUrl(string $urlRedirect): void
     {
