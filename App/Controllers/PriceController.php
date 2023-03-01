@@ -48,8 +48,36 @@ class PriceController extends Controller
 
         $singleProduct = $this->productModel->selectOneById($idProduct);
         $storesLeftProduct = $this->storeModel->selectStoresLeftFromProduct($idProduct);
-    
+
         return Render::make("prices/add", compact("singleProduct", "storesLeftProduct"));
+    }
+
+
+    public function update(): Render
+    {
+        if (!isset($_GET["idproduct"]) || !isset($_GET["idstore"])) {
+            header("Location: /");
+            die;
+        }
+
+        $product = $this->productModel->selectOneById($_GET["idproduct"]);
+        $store = $this->storeModel->selectOneById($_GET["idstore"]);
+
+        $values = ["id_store" => $store->id_store, "id_product" => $product->id_product];
+        $price = $this->storeModel->selectPriceFromProductAndStore($values);
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            if ($this->checkPostValues(['price'])) {
+                $values["amount"] = $_POST["price"];
+                $this->priceModel->update($values);
+                header("Location: /product/details?id=" . $product->id_product);
+                die;
+            }
+
+            Session::set("error", "Il fault un prix !");
+        }
+
+        return Render::make("prices/edit",  compact("product", "store", "price"));
     }
 
 
@@ -61,12 +89,5 @@ class PriceController extends Controller
         }
 
         header("Location: /");
-    }
-
-
-    public function update(): Render
-    {
-
-        return new Render("store");
     }
 }

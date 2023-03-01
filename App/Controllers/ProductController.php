@@ -176,57 +176,6 @@ class ProductController extends Controller
     }
 
 
-    // public function addStoreToProduct(): Render
-    // {
-    //     $this->checkIdUrl("/");
-    //     $idProduct = (int)$_GET['id'];
-
-    //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //         $valuesToCheck = ["store", "price"];
-    //         if ($this->checkPostValues($valuesToCheck, $_POST)) {
-    //             $data = ["id_product" => $idProduct, "id_store" => $_POST["store"], "amount" => $_POST["price"]];
-    //             $this->productModel->addStoreToProduct($data);
-    //             header("Location: /product/details?id=" . $idProduct);
-    //         }
-
-    //         Session::set("error", "Veuillez remplir tout les champs !<br>");
-    //     }
-
-    //     $singleProduct = $this->productModel->selectOneById($idProduct);
-    //     $storesLeftProduct = $this->storeModel->selectStoresLeftFromProduct($idProduct);
-
-    //     return Render::make("Products/addStore", compact("singleProduct", "storesLeftProduct"));
-    // }
-
-
-    public function editStoreProduct(): Render
-    {
-        if (!isset($_GET["idproduct"]) || !isset($_GET["idstore"])) {
-            header("Location: /");
-            die;
-        }
-
-        $product = $this->productModel->selectOneById($_GET["idproduct"]);
-        $store = $this->storeModel->selectOneById($_GET["idstore"]);
-
-        $values = ["id_store" => $store->id_store, "id_product" => $product->id_product];
-        $price = $this->storeModel->selectPriceFromProductAndStore($values);
-
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if ($this->checkPostValues(['price'])) {
-                $values["amount"] = $_POST["price"];
-                $this->storeModel->updatePrice($values);
-                header("Location: /product/details?id=" . $product->id_product);
-                die;
-            }
-
-            Session::set("error", "Il fault un prix !");
-        }
-
-        return Render::make("Products/editStore",  compact("product", "store", "price"));
-    }
-
-
     private function displayTableProducts(): string
     {
         $products = $this->productModel->selectAll();

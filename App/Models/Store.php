@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Core\Database\Database;
 
 class Store extends Model
 {
@@ -53,12 +52,6 @@ class Store extends Model
         return $this->db->readOneRow($query, $data);
     }
 
-
-    public function updatePrice(array $data): bool
-    {
-        $query = "UPDATE prices SET amount = :amount WHERE id_store = :id_store AND id_product = :id_product";
-        return $this->db->write($query, $data);
-    }
 
     /**
      * selectStoresByProducts

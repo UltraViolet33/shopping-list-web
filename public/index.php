@@ -19,15 +19,15 @@ $router->post("/product/update", ['App\Controllers\ProductController', 'update']
 $router->post("/product/updatestock", ['App\Controllers\ProductController', 'updateStock']);
 $router->post("/product/delete", ['App\Controllers\ProductController', 'delete']);
 $router->get("/product/details", ["App\Controllers\ProductController", 'showDetails']);
-// $router->get("/product/addStore", ["App\Controllers\ProductController", 'addStoreToProduct']);
-// $router->post("/product/addStore", ["App\Controllers\ProductController", 'addStoreToProduct']);
-$router->get("/product/store/edit", ["App\Controllers\ProductController", 'editStoreProduct']);
-$router->post("/product/store/edit", ["App\Controllers\ProductController", 'editStoreProduct']);
 
 //prices
 $router->get("/prices/all", ['App\Controllers\PriceController', 'index']);
-$router->get("/prices/add", ['App\Controllers\PriceController', 'create']);
+
+$router->get("/priceq/add", ['App\Controllers\PriceController', 'create']);
 $router->post("/prices/add", ['App\Controllers\PriceController', 'create']);
+
+$router->get("/price/update", ['App\Controllers\PriceController', 'update']);
+$router->post("/price/update", ['App\Controllers\PriceController', 'update']);
 
 
 $router->post("/price/delete", ['App\Controllers\PriceController', 'delete']);

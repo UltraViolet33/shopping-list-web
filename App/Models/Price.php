@@ -11,9 +11,10 @@ class Price extends Model
         return $this->db->write($query, $data);
     }
 
-
+    
     public function update(array $data): bool
     {
-        return true;
+        $query = "UPDATE $this->table SET amount = :amount WHERE id_store = :id_store AND id_product = :id_product";
+        return $this->db->write($query, $data);
     }
 }
