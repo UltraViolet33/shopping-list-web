@@ -26,8 +26,7 @@ class ProductController extends Controller
     }
 
 
-
-    public function getAllProducts()
+    public function getAllProducts(): string
     {
         $productsHTML = $this->displayTableProducts();
         return json_encode(["products" => $productsHTML]);
@@ -38,41 +37,58 @@ class ProductController extends Controller
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if (!isset($_POST['recurent'])) {
+            $values = $this->getValuesFormProduct();
 
-                if ($this->validateDataForm()) {
-
-                    $values = [
-                        "name" => $_POST["name"],
-                        "stock_min" => (int)$_POST["stockMin"],
-                        "stock_actual" => (int) $_POST["stockActual"],
-                        "recurent" => 0
-                    ];
-
-                    (new Product())->create($values);
-                    header("Location: /");
-                    die;
-                }
-            } else {
-                if (isset($_POST['name']) || empty($_POST['name'])) {
-
-                    $values = [
-                        "name" => $_POST["name"],
-                        "stock_min" => null,
-                        "stock_actual" => null,
-                        "recurent" => 1
-                    ];
-
-                    (new Product())->create($values);
-                    header("Location: /");
-                    die;
-                }
-
-                Session::set("error", "Please give a name to the product");
+            if (is_array($values)) {
+                $this->productModel->create($values);
+                header("Location: /");
+                die;
             }
         }
 
         return Render::make("Products/add");
+    }
+
+
+    private function getValuesFormProduct(): array|bool
+    {
+        if (isset($_POST["recurent"])) {
+            return $this->checkDataRecurentProductForm();
+        }
+
+        return $this->checkDataProductNotRecurentForm();
+    }
+
+
+    private function checkDataProductNotRecurentForm(): array|bool
+    {
+        if ($this->validateDataForm()) {
+
+            return  $values = [
+                "name" => $_POST["name"],
+                "stock_min" => (int)$_POST["stockMin"],
+                "stock_actual" => (int) $_POST["stockActual"],
+                "recurrent" => 0
+            ];
+        }
+
+        return false;
+    }
+
+
+    private function checkDataRecurentProductForm(): array|bool
+    {
+        if (!isset($_POST['name']) || empty($_POST['name'])) {
+            Session::set("error", "Give a name to the product");
+            return false;
+        }
+
+        return $values = [
+            "name" => $_POST["name"],
+            "stock_min" => null,
+            "stock_actual" => null,
+            "recurrent" => 1
+        ];
     }
 
 
@@ -99,34 +115,17 @@ class ProductController extends Controller
     }
 
 
-    /**
-     * updateStock
-     *
-     * @return string
-     */
+
     public function updateStock(): string
     {
-        $test = ['msg' => 'ok'];
-
         $data = file_get_contents("php://input");
         $data = json_decode($data);
-
-        if (!is_object($data)) {
-            $test = ['msg' => 'error'];
-            return json_encode($test);
-        }
-
-        if (!$data->type === "updateStock" || !is_int($data->idProduct) || !is_int($data->value)) {
-            $test = ['msg' => 'error'];
-            return json_encode($test);
-        }
 
         $idProduct = $data->idProduct;
         $stock = $data->value;
 
-        $productModel = new Product();
-        if (!$productModel->updateStock($idProduct, $stock)) {
-        }
+        $data = ["id" => $idProduct, "stock" => $stock];
+        $this->productModel->updateStock($data);
 
         $productsHTML = $this->displayTableProducts();
         $message = ["result" => "OK", "products" => $productsHTML];
@@ -147,7 +146,6 @@ class ProductController extends Controller
     }
 
 
-
     public function showDetails(): Render
     {
         $this->checkIdUrl("/");
@@ -163,37 +161,13 @@ class ProductController extends Controller
         $idProduct = (int)$_GET['id'];
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (!isset($_POST['recurent'])) {
-                if ($this->validateDataForm()) {
+            $values = $this->getValuesFormProduct();
 
-                    $values = [
-                        "id_product" => $idProduct,
-                        "name" => $_POST["name"],
-                        "stock_min" => (int)$_POST["stockMin"],
-                        "stock_actual" => (int) $_POST["stockActual"],
-                        "recurrent" => 0
-                    ];
-
-                    $this->productModel->update($values);
-                    header("Location: /");
-                    die;
-                }
-            } else {
-                if (isset($_POST['name']) || empty($_POST['name'])) {
-
-                    $values = [
-                        "id_product" => $idProduct,
-                        "name" => $_POST["name"],
-                        "stock_min" => null,
-                        "stock_actual" => null,
-                        "recurrent" => 1
-                    ];
-
-                    $this->productModel->update($values);
-                    header("Location: /");
-                    die;
-                }
-                Session::set("error", "Please give a name to the product");
+            if (is_array($values)) {
+                $values["id_product"] = $idProduct;
+                $this->productModel->update($values);
+                header("Location: /");
+                die;
             }
         }
 
@@ -202,27 +176,27 @@ class ProductController extends Controller
     }
 
 
-    public function addStoreToProduct(): Render
-    {
-        $this->checkIdUrl("/");
-        $idProduct = (int)$_GET['id'];
+    // public function addStoreToProduct(): Render
+    // {
+    //     $this->checkIdUrl("/");
+    //     $idProduct = (int)$_GET['id'];
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $valuesToCheck = ["store", "price"];
-            if ($this->checkPostValues($valuesToCheck, $_POST)) {
-                $data = ["id_product" => $idProduct, "id_store" => $_POST["store"], "amount" => $_POST["price"]];
-                $this->productModel->addStoreToProduct($data);
-                header("Location: /product/details?id=" . $idProduct);
-            }
+    //     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //         $valuesToCheck = ["store", "price"];
+    //         if ($this->checkPostValues($valuesToCheck, $_POST)) {
+    //             $data = ["id_product" => $idProduct, "id_store" => $_POST["store"], "amount" => $_POST["price"]];
+    //             $this->productModel->addStoreToProduct($data);
+    //             header("Location: /product/details?id=" . $idProduct);
+    //         }
 
-            Session::set("error", "Veuillez remplir tout les champs !<br>");
-        }
+    //         Session::set("error", "Veuillez remplir tout les champs !<br>");
+    //     }
 
-        $singleProduct = $this->productModel->selectOneById($idProduct);
-        $storesLeftProduct = $this->storeModel->selectStoresLeftFromProduct($idProduct);
+    //     $singleProduct = $this->productModel->selectOneById($idProduct);
+    //     $storesLeftProduct = $this->storeModel->selectStoresLeftFromProduct($idProduct);
 
-        return Render::make("Products/addStore", compact("singleProduct", "storesLeftProduct"));
-    }
+    //     return Render::make("Products/addStore", compact("singleProduct", "storesLeftProduct"));
+    // }
 
 
     public function editStoreProduct(): Render
@@ -253,11 +227,9 @@ class ProductController extends Controller
     }
 
 
-
     private function displayTableProducts(): string
     {
-        $product = new Product();
-        $products = $product->selectAll();
+        $products = $this->productModel->selectAll();
 
         $html = "";
 

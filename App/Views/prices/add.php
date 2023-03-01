@@ -1,7 +1,7 @@
 <div class="container my-3">
     <div class="row">
         <div class="col-12">
-            <h1 class="text-center">Magasins pour le produit : </h1>
+            <h1 class="text-center">Magasins pour le produit : <?= $singleProduct->name ?></h1>
         </div>
     </div>
     <div class="row justify-content-center my-5">
@@ -10,7 +10,9 @@
                 <div class="mb-3">
                     <select name="store" class="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
-
+                        <?php foreach ($storesLeftProduct as $store) : ?>
+                            <option value="<?= $store->id_store ?>"><?= $store->name ?></option>
+                        <?php endforeach; ?>
                     </select>
                     <div class="mb-3">
                         <label for="price" class="form-label">Prix pour ce magasin : </label>

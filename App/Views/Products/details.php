@@ -55,7 +55,7 @@
                 <p>Pas de magasins enregistré pour ce produit</p>
             <?php endif; ?>
             <div>
-                <a href="/product/addStore?id=<?= $singleProduct->id_product ?>" class="btn btn-primary">Ajouter un magasin</a>
+                <a href="/prices/add?id=<?= $singleProduct->id_product ?>" class="btn btn-primary">Ajouter un magasin</a>
             </div>
         </div>
     </div>

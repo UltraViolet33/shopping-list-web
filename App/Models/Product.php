@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Models\Model;
-use App\Core\Database\Database;
 
 class Product extends Model
 {
@@ -11,10 +10,10 @@ class Product extends Model
     public function create(array $data): bool
     {
         $query = "INSERT INTO products(name, stock_min, stock_actual, recurrent) 
-        VALUES(:name, :stock_min, :stock_actual, :recurent)";
+        VALUES(:name, :stock_min, :stock_actual, :recurrent)";
         return $this->db->write($query, $data);
     }
-    
+
 
     public function update(array $data): bool
     {
@@ -24,19 +23,9 @@ class Product extends Model
     }
 
 
-    /**
-     * updateStock
-     *
-     * @param  mixed $id
-     * @param  mixed $stock
-     * @return bool
-     */
-    public function updateStock(int $id, int $stock): bool
+    public function updateStock(array $data): bool
     {
-        $query = "UPDATE products SET stock_actual = :stock WHERE id_product = :id";
-        $data['id'] = $id;
-        $data['stock'] = $stock;
-
+        $query = "UPDATE $this->table SET stock_actual = :stock WHERE $this->id = :id";
         return $this->db->write($query, $data);
     }
 
@@ -53,11 +42,11 @@ class Product extends Model
     }
 
 
-    public function addStoreToProduct(array $data): bool
-    {
-        $query = "INSERT INTO prices(amount, id_product, id_store) VALUES(:amount, :id_product, :id_store)";
-        return $this->db->write($query, $data);
-    }
+    // public function addStoreToProduct(array $data): bool
+    // {
+    //     $query = "INSERT INTO prices(amount, id_product, id_store) VALUES(:amount, :id_product, :id_store)";
+    //     return $this->db->write($query, $data);
+    // }
 
 
     public function selectStoresAndPrice(int $id): array
@@ -68,7 +57,7 @@ class Product extends Model
     }
 
 
-    
+
     public function getAllStoresProduct(int $id): array
     {
         $query = "SELECT id_store FROM prices WHERE id_product = :id_product";

@@ -24,6 +24,9 @@ class Store extends Model
     public function selectStoresLeftFromProduct(int $idProduct): array
     {
         $productStoresId = $this->getStoresIdFromProduct($idProduct);
+        if (count($productStoresId) == 0) {
+            return $this->selectAll();
+        }
         $query = "SELECT * FROM stores WHERE id_store NOT IN (" . implode(",", $productStoresId) . ")";
         return $this->db->read($query);
     }
@@ -50,7 +53,7 @@ class Store extends Model
         return $this->db->readOneRow($query, $data);
     }
 
-    
+
     public function updatePrice(array $data): bool
     {
         $query = "UPDATE prices SET amount = :amount WHERE id_store = :id_store AND id_product = :id_product";
