@@ -25,7 +25,9 @@ $router->get("/product/store/edit", ["App\Controllers\ProductController", 'editS
 $router->post("/product/store/edit", ["App\Controllers\ProductController", 'editStoreProduct']);
 
 //prices
+$router->get("/prices/all", ['App\Controllers\PriceController', 'index']);
 $router->post("/price/delete", ['App\Controllers\PriceController', 'delete']);
+
 
 
 // List
