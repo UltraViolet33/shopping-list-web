@@ -46,12 +46,6 @@ class Store extends Model
     }
 
 
-    public function selectPriceFromProductAndStore(array $data): object
-    {
-        $query = "SELECT id_price, amount FROM prices WHERE id_store = :id_store AND id_product = :id_product";
-        return $this->db->readOneRow($query, $data);
-    }
-
 
     /**
      * selectStoresByProducts
@@ -59,12 +53,12 @@ class Store extends Model
      * @param int $id
      * @return array|bool
      */
-    public function selectStoresByProducts(int $id): array|bool
-    {
-        $query = "SELECT $this->table.name FROM $this->table 
-        INNER JOIN products_stores ON $this->table.id_stores = products_stores.id_stores 
-        WHERE products_stores.id_products = :id_products";
+    // public function selectStoresByProducts(int $id): array|bool
+    // {
+    //     $query = "SELECT $this->table.name FROM $this->table 
+    //     INNER JOIN products_stores ON $this->table.id_stores = products_stores.id_stores 
+    //     WHERE products_stores.id_products = :id_products";
 
-        return $this->db->read($query, ["id_products" => $id]);
-    }
+    //     return $this->db->read($query, ["id_products" => $id]);
+    // }
 }

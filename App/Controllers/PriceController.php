@@ -64,7 +64,7 @@ class PriceController extends Controller
         $store = $this->storeModel->selectOneById($_GET["idstore"]);
 
         $values = ["id_store" => $store->id_store, "id_product" => $product->id_product];
-        $price = $this->storeModel->selectPriceFromProductAndStore($values);
+        $price = $this->priceModel->selectPriceFromProductAndStore($values);
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if ($this->checkPostValues(['price'])) {

@@ -22,20 +22,17 @@ $router->get("/product/details", ["App\Controllers\ProductController", 'showDeta
 
 //prices
 $router->get("/prices/all", ['App\Controllers\PriceController', 'index']);
-
-$router->get("/priceq/add", ['App\Controllers\PriceController', 'create']);
+$router->get("/prices/add", ['App\Controllers\PriceController', 'create']);
 $router->post("/prices/add", ['App\Controllers\PriceController', 'create']);
-
 $router->get("/price/update", ['App\Controllers\PriceController', 'update']);
 $router->post("/price/update", ['App\Controllers\PriceController', 'update']);
-
-
 $router->post("/price/delete", ['App\Controllers\PriceController', 'delete']);
 
 
 
 // List
 $router->get("/list", ["App\Controllers\ListController", "index"]);
+
 $router->post("/list", ["App\Controllers\ListController", "index"]);
 $router->get("/getList", ["App\Controllers\ListController", "getProductList"]);
 

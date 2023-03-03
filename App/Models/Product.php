@@ -30,11 +30,6 @@ class Product extends Model
     }
 
 
-    /**
-     * selectListProducts
-     *
-     * @return array
-     */
     public function selectListProducts(): array
     {
         $query = "SELECT * , (stock_min - stock_actual + 1) AS number_item FROM $this->table WHERE stock_actual <= stock_min";
@@ -78,25 +73,25 @@ class Product extends Model
      * @param array $data
      * @return bool|object
      */
-    public function selectPriceByStoreAndProduct(array $data): bool|object
-    {
-        $query = "SELECT amount FROM prices WHERE id_products = :id_products AND id_store = :id_store";
-        return $this->db->readOneRow($query, $data);
-    }
+    // public function selectPriceByStoreAndProduct(array $data): bool|object
+    // {
+    //     $query = "SELECT amount FROM prices WHERE id_products = :id_products AND id_store = :id_store";
+    //     return $this->db->readOneRow($query, $data);
+    // }
 
     /**
      * selectProductsStoresAndPricesForList
      *
      * @return array
      */
-    public function selectProductsStoresAndPricesForList(): array
-    {
-        $query = "SELECT products.name, products.id_products, GROUP_CONCAT(stores.name,',', prices.amount) AS prices_stores,
-        (products.stock_min - products.stock_actual + 1)  AS number_item
-                  FROM products, prices, stores WHERE products.id_products = prices.id_products
-                AND stores.id_store = prices.id_store AND products.stock_actual <= products.stock_min
-                GROUP BY products.id_products, products.name";
+    // public function selectProductsStoresAndPricesForList(): array
+    // {
+    //     $query = "SELECT products.name, products.id_products, GROUP_CONCAT(stores.name,',', prices.amount) AS prices_stores,
+    //     (products.stock_min - products.stock_actual + 1)  AS number_item
+    //               FROM products, prices, stores WHERE products.id_products = prices.id_products
+    //             AND stores.id_store = prices.id_store AND products.stock_actual <= products.stock_min
+    //             GROUP BY products.id_products, products.name";
 
-        return $this->db->read($query);
-    }
+    //     return $this->db->read($query);
+    // }
 }

@@ -11,6 +11,7 @@
                     <thead>
                         <tr class="text-center">
                             <th scope="col">Acheter ?</th>
+                            <th scope="col">Combien ?</th>
                             <th scope="col">Produit</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Price</th>
