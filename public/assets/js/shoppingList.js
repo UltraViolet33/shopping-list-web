@@ -1,12 +1,28 @@
 let list = (function () {
   let model = {
     data: [],
+    stores: [],
   };
 
   model.initializeProducts = function (products) {
     const data = products;
+    console.log(products);
     products.forEach(product => (product.isInList = false));
+
     this.data = products;
+
+    for (const product of this.data) {
+      for (const store of product.stores) {
+        let storeEl = this.stores.find(el => el.name == store.storeName);
+
+        if (!storeEl) {
+          this.stores.push({ name: store.storeName, amount: 0 });
+        }
+      }
+    }
+
+    console.log(this.stores);
+
     view.maj();
   };
 
@@ -16,6 +32,7 @@ let list = (function () {
         product.isInList = !product.isInList;
       }
     }
+    this.calculateTotalStores();
     view.maj();
   };
 
@@ -46,14 +63,46 @@ let list = (function () {
     view.maj();
   };
 
+  model.resetTotalStores = function () {
+    this.stores.forEach(store => {
+      store.amount = 0;
+    });
+  };
+
+  model.calculateTotalStores = function () {
+    this.resetTotalStores();
+    for (const product of this.data) {
+      for (const store of product.stores) {
+        for (const storeModel of this.stores) {
+          if (storeModel.name == store.storeName && product.isInList) {
+            if (product.numberToBuy) {
+              storeModel.amount +=
+                parseFloat(store.price.amount) * parseInt(product.numberToBuy);
+            } else {
+              storeModel.amount +=
+                parseFloat(store.price.amount) * parseInt(product.number_item);
+            }
+          }
+        }
+      }
+    }
+
+    view.maj();
+  };
+
   let view = {
     maj: function () {
       const tableProducts = document.getElementById("tableProducts");
+      const storesDiv = document.getElementById("storesAmount");
       let html = "";
 
       for (product of model.data) {
         // console.log(product);
-        html += `<tr><td><input type="checkbox" onchange="onChange(${product.id_product})" id="${product.id_product}"></td>`;
+        html += `<tr><td><input type="checkbox" onchange="onChange(${
+          product.id_product
+        })" id="${product.id_product}" ${
+          product.isInList ? "checked" : ""
+        }></td>`;
 
         if (product.isInList) {
           html += `<td><button class="btn btn-danger" type="button" onclick="list.removeItem(${product.id_product})">-</button>`;
@@ -78,7 +127,14 @@ let list = (function () {
         html += "</td>";
       }
 
+      let storeHtml = "";
+      for (store of model.stores) {
+        storeHtml += `<p>${store.name} - ${store.amount} € </p>`;
+      }
+
       tableProducts.innerHTML = html;
+
+      storesDiv.innerHTML = storeHtml;
     },
   };
 
@@ -101,8 +157,6 @@ let list = (function () {
     removeItem: function (idProduct) {
       model.removeItem(idProduct);
     },
-
-
   };
 })();
 
