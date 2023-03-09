@@ -24,4 +24,3 @@
     </div>
 </div>
 <script src="assets/js/indexProducts.js"></script>
-

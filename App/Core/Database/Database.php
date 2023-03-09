@@ -29,11 +29,6 @@ class Database
     }
 
 
-    // public static function getNewInstance(): self
-    // {
-    //     return new Database();
-    // }
-
     public function read(string $query,  array $data = array()): array
     {
         $statement = $this->PDOInstance->prepare($query);

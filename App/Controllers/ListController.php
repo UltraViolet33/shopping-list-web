@@ -8,7 +8,6 @@ use App\Models\Price;
 use App\Models\Store;
 
 
-
 class ListController
 {
     private Product $productModel;
@@ -20,24 +19,23 @@ class ListController
 
     public function index(): Render
     {
-        $productsToBuy = $this->productModel->selectListProducts();
-        $products = $this->addStoresToProducts($productsToBuy);
-
-        // var_dump($products);
-        // die;
-
         return Render::make("List/index");
     }
-
 
 
     public function getProductList(): string
     {
         $productsToBuy = $this->productModel->selectListProducts();
-        $products = $this->addStoresToProducts($productsToBuy);
+        $recurrentProducts = $this->productModel->selectAllRecurrentProducts();
+        foreach ($recurrentProducts as $product) {
+            $product->number_item = 1;
+        }
+        $products = array_merge($productsToBuy, $recurrentProducts);
+        $products = $this->addStoresToProducts($products);
 
         return json_encode($products);
     }
+    
 
     private function addStoresToProducts(array $products): array
     {

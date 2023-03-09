@@ -44,21 +44,4 @@ class Store extends Model
 
         return $idStores;
     }
-
-
-
-    /**
-     * selectStoresByProducts
-     *
-     * @param int $id
-     * @return array|bool
-     */
-    // public function selectStoresByProducts(int $id): array|bool
-    // {
-    //     $query = "SELECT $this->table.name FROM $this->table 
-    //     INNER JOIN products_stores ON $this->table.id_stores = products_stores.id_stores 
-    //     WHERE products_stores.id_products = :id_products";
-
-    //     return $this->db->read($query, ["id_products" => $id]);
-    // }
 }

@@ -37,11 +37,11 @@ class Product extends Model
     }
 
 
-    // public function addStoreToProduct(array $data): bool
-    // {
-    //     $query = "INSERT INTO prices(amount, id_product, id_store) VALUES(:amount, :id_product, :id_store)";
-    //     return $this->db->write($query, $data);
-    // }
+    public function selectAllRecurrentProducts(): array
+    {
+        $query = "SELECT * FROM $this->table WHERE recurrent = 1";
+        return $this->db->read($query);
+    }
 
 
     public function selectStoresAndPrice(int $id): array
@@ -50,7 +50,6 @@ class Product extends Model
         INNER JOIN stores ON stores.id_store = prices.id_store WHERE prices.id_product = :id_product";
         return $this->db->read($query, ["id_product" => $id]);
     }
-
 
 
     public function getAllStoresProduct(int $id): array
@@ -66,32 +65,4 @@ class Product extends Model
         INNER JOIN stores ON stores.id_store = prices.id_store WHERE prices.id_product = :id_product";
         return $this->db->read($query, ["id_product" => $id]);
     }
-
-    /**
-     * selectPriceByStoreAndProduct
-     *
-     * @param array $data
-     * @return bool|object
-     */
-    // public function selectPriceByStoreAndProduct(array $data): bool|object
-    // {
-    //     $query = "SELECT amount FROM prices WHERE id_products = :id_products AND id_store = :id_store";
-    //     return $this->db->readOneRow($query, $data);
-    // }
-
-    /**
-     * selectProductsStoresAndPricesForList
-     *
-     * @return array
-     */
-    // public function selectProductsStoresAndPricesForList(): array
-    // {
-    //     $query = "SELECT products.name, products.id_products, GROUP_CONCAT(stores.name,',', prices.amount) AS prices_stores,
-    //     (products.stock_min - products.stock_actual + 1)  AS number_item
-    //               FROM products, prices, stores WHERE products.id_products = prices.id_products
-    //             AND stores.id_store = prices.id_store AND products.stock_actual <= products.stock_min
-    //             GROUP BY products.id_products, products.name";
-
-    //     return $this->db->read($query);
-    // }
 }

@@ -5,18 +5,16 @@ namespace App\Controllers;
 use App\Core\Render;
 use App\Core\Helpers\Session;
 use App\Models\Product;
-use App\Models\Store;
+
 
 class ProductController extends Controller
 {
     private Product $productModel;
-    private Store $storeModel;
 
 
     public function __construct()
     {
         $this->productModel = new Product();
-        $this->storeModel = new Store();
     }
 
 
@@ -113,7 +111,6 @@ class ProductController extends Controller
 
         return true;
     }
-
 
 
     public function updateStock(): string

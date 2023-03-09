@@ -81,7 +81,6 @@ class PriceController extends Controller
     }
 
 
-
     public function delete(): void
     {
         if ($this->checkPostValues(["id_price"])) {
