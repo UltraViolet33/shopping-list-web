@@ -1,5 +1,4 @@
 const getProducts = () => {
-  console.log("fetch");
   fetch("products/all")
     .then(response => response.json())
     .then(response => displayProductsHTML(response.products));

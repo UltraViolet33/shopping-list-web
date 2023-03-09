@@ -1,17 +1,15 @@
 <?php
 
 require_once "../vendor/autoload.php";
-require_once "../App/Core/config.php";
 
 use App\Core\App;
 use App\Router\Router;
 
 $router = new Router();
-$router->get('/', ['App\Controllers\ProductController', 'index']);
-
-$router->get("/products/all", ["App\Controllers\ProductController", "getAllProducts"]);
 
 // Product
+$router->get('/', ['App\Controllers\ProductController', 'index']);
+$router->get("/products/all", ["App\Controllers\ProductController", "getAllProducts"]);
 $router->get('/product/create', ['App\Controllers\ProductController', 'create']);
 $router->post('/product/create', ['App\Controllers\ProductController', 'create']);
 $router->get("/product/update", ['App\Controllers\ProductController', 'update']);
@@ -29,10 +27,8 @@ $router->post("/price/update", ['App\Controllers\PriceController', 'update']);
 $router->post("/price/delete", ['App\Controllers\PriceController', 'delete']);
 
 
-
 // List
 $router->get("/list", ["App\Controllers\ListController", "index"]);
-
 $router->post("/list", ["App\Controllers\ListController", "index"]);
 $router->get("/getList", ["App\Controllers\ListController", "getProductList"]);
 

@@ -16,7 +16,11 @@ let list = (function () {
         let storeEl = this.stores.find(el => el.name == store.storeName);
 
         if (!storeEl) {
-          this.stores.push({ name: store.storeName, amount: 0 });
+          this.stores.push({
+            name: store.storeName,
+            amount: 0,
+            unknowPrice: 0,
+          });
         }
       }
     }
@@ -46,6 +50,7 @@ let list = (function () {
         }
       }
     }
+    this.calculateTotalStores();
     view.maj();
   };
 
@@ -59,13 +64,14 @@ let list = (function () {
         }
       }
     }
-
+    this.calculateTotalStores();
     view.maj();
   };
 
   model.resetTotalStores = function () {
     this.stores.forEach(store => {
       store.amount = 0;
+      store.unknowPrice = 0;
     });
   };
 
@@ -75,12 +81,18 @@ let list = (function () {
       for (const store of product.stores) {
         for (const storeModel of this.stores) {
           if (storeModel.name == store.storeName && product.isInList) {
-            if (product.numberToBuy) {
-              storeModel.amount +=
-                parseFloat(store.price.amount) * parseInt(product.numberToBuy);
+            if (store.price.amount) {
+              if (product.numberToBuy) {
+                storeModel.amount +=
+                  parseFloat(store.price.amount) *
+                  parseInt(product.numberToBuy);
+              } else {
+                storeModel.amount +=
+                  parseFloat(store.price.amount) *
+                  parseInt(product.number_item);
+              }
             } else {
-              storeModel.amount +=
-                parseFloat(store.price.amount) * parseInt(product.number_item);
+              storeModel.unknowPrice += 1;
             }
           }
         }
@@ -121,7 +133,9 @@ let list = (function () {
 
         html += `<td>`;
         for (store of product.stores) {
-          html += `<p>${store.storeName} - ${store.price.amount} €</p>`;
+          html += `<p>${store.storeName} - ${
+            store.price.amount ?? "unknown"
+          } €</p>`;
         }
 
         html += "</td>";
@@ -129,7 +143,11 @@ let list = (function () {
 
       let storeHtml = "";
       for (store of model.stores) {
-        storeHtml += `<p>${store.name} - ${store.amount} € </p>`;
+        storeHtml += `<p>${store.name} - ${store.amount} € ${
+          store.unknowPrice > 0
+            ? "-" + store.unknowPrice + "unknow products price"
+            : ""
+        }</p>`;
       }
 
       tableProducts.innerHTML = html;
