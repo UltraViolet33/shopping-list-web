@@ -7,13 +7,13 @@ class Config
 
     private static $instance;
     public static array $dbConfig;
-    private static string $state = "PROD";
+    private static bool $debug = false;
 
     private function __construct()
     {
         self::$dbConfig['db_name'] = "shopping-list-prod";
 
-        if (self::$state == "DEBUG") {
+        if (self::$debug) {
             self::$dbConfig['db_name'] = "shopping-list-debug";
         }
 
