@@ -188,7 +188,7 @@ class ProductController extends Controller
 
             if (!$product->recurrent) {
 
-                if ($product->stock_actual <= $product->stock_min) {
+                if ($product->stock_actual <= $product->stock_min && $product->stock_min > 0) {
                     $class = "bg-danger";
                 }
 

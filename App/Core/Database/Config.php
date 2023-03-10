@@ -7,13 +7,18 @@ class Config
 
     private static $instance;
     public static array $dbConfig;
-
+    private static string $state = "PROD";
 
     private function __construct()
     {
+        self::$dbConfig['db_name'] = "shopping-list-prod";
+
+        if (self::$state == "DEBUG") {
+            self::$dbConfig['db_name'] = "shopping-list-debug";
+        }
+
         self::$dbConfig['db_type'] = "mysql";
         self::$dbConfig['db_host'] = "localhost";
-        self::$dbConfig['db_name'] = "shopping-list";
         self::$dbConfig['db_user'] = "root";
         self::$dbConfig['db_password'] = "";
     }
