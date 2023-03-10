@@ -13,14 +13,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="stockMin" class="form-label">Stock Minimal : </label>
-                    <input type="number" class="form-control" n name="stockMin" <?= isset($singleProduct) ? 'value="' . htmlspecialChars($singleProduct->stock_min) . '"' : '' ?>>
+                    <input type="number" id="stockMin" class="form-control" name="stockMin" <?= !is_null($singleProduct->stock_min) ? 'value="' . htmlspecialChars($singleProduct->stock_min) . '"' : '' ?>>
                 </div>
                 <div class="mb-3">
                     <label for="stockActual" class="form-label">Stock Actuel : </label>
-                    <input type="number" class="form-control" name="stockActual" <?= isset($singleProduct) ? 'value="' . htmlspecialChars($singleProduct->stock_actual) . '"' : '' ?>>
+                    <input type="number" id="stockActual" class="form-control" name="stockActual" <?= !is_null($singleProduct->stock_actual) ?  'value="' . htmlspecialChars($singleProduct->stock_actual) . '"' : '' ?>>
                 </div>
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="recurent" value="on" name="recurent">
                     <?php if ($singleProduct->recurrent) : ?>
                         <input class="form-check-input" type="checkbox" id="recurent" value="on" name="recurent" checked>
                     <?php else : ?>
@@ -44,3 +43,4 @@
         </div>
     </div>
 </div>
+<script src="../assets/js/formProduct.js"></script>

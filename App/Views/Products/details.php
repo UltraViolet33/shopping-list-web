@@ -19,8 +19,10 @@
                 <tbody>
                     <tr>
                         <th><?= $singleProduct->name ?></th>
-                        <th><?= $singleProduct->stock_actual ?></th>
-                        <th><?= $singleProduct->stock_min ?></th>
+                        <th><?= $singleProduct->stock_actual ?? "produit récurrent" ?></th>
+                        <th><?= $singleProduct->stock_min ?? "produit récurrent" ?></th>
+                        <th><button class="btn btn-primary">Modifier</button></th>
+                        <th><button class="btn btn-danger">Supprimer</button></th>
                     </tr>
                 </tbody>
             </table>
@@ -31,12 +33,21 @@
                         <tr>
                             <th scope="col">Nom</th>
                             <th scope="col">Prix</th>
+                            <th scope="col">Modifier</th>
+                            <th scope="col">Supprimer</th>
                         </tr>
                     </thead>
                     <?php foreach ($storesProduct as $store) : ?>
                         <tr>
                             <th><?= $store->name ?></th>
                             <th><?= $store->amount ?> €</th>
+                            <th><a href="/price/update?idproduct=<?= $singleProduct->id_product ?>&idstore=<?= $store->id_store ?>" class="btn btn-primary">Modifier</a></th>
+                            <td>
+                                <form method="POST" action="/price/delete">
+                                    <input type="hidden" value="<?= $store->id_price ?>" name="id_price">
+                                    <button onclick="return confirm('Are you sure ?')" class="btn btn-danger" type="submit">Supprimer</button>
+                                </form>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </table>
@@ -44,7 +55,7 @@
                 <p>Pas de magasins enregistré pour ce produit</p>
             <?php endif; ?>
             <div>
-                <a href="/product/addStore?id=<?= $singleProduct->id_products ?>" class="btn btn-primary">Ajouter un magasin</a>
+                <a href="/prices/add?id=<?= $singleProduct->id_product ?>" class="btn btn-primary">Ajouter un magasin</a>
             </div>
         </div>
     </div>

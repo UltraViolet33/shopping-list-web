@@ -4,14 +4,14 @@
             <h1 class="text-center">Magasins pour le produit : <?= $singleProduct->name ?></h1>
         </div>
     </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center my-5">
         <div class="col-10 col-md-6">
             <form method="POST">
                 <div class="mb-3">
                     <select name="store" class="form-select" aria-label="Default select example">
                         <option selected>Open this select menu</option>
-                        <?php foreach ($allStores as $store) : ?>
-                            <option value="<?= $store->id_stores ?>"><?= $store->name ?></option>
+                        <?php foreach ($storesLeftProduct as $store) : ?>
+                            <option value="<?= $store->id_store ?>"><?= $store->name ?></option>
                         <?php endforeach; ?>
                     </select>
                     <div class="mb-3">

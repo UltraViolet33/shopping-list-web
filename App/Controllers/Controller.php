@@ -7,69 +7,31 @@ use App\Core\Render;
 abstract class Controller
 {
 
-    protected string $msgErrors;
-
     abstract protected function update(): Render;
 
 
-    /**
-     * __construct
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->msgErrors = "";
-    }
+    abstract protected function index(): Render;
 
 
-    /**
-     * setMsgErrors
-     *
-     * @param  ?string $msgError
-     * @return void
-     */
-    protected function setMsgErrors(?string $msgError): void
-    {
-        $this->msgErrors .= $msgError;
-    }
+    abstract protected function create(): Render;
 
 
-    /**
-     * getMsgErrors
-     *
-     * @return string
-     */
-    protected function getMsgErrors(): string
-    {
-        return $this->msgErrors;
-    }
+    abstract protected function delete(): void;
 
-    /**
-     * checkIdUrl
-     *
-     * @param string $urlRedirect
-     * @return void
-     */
+
     protected function checkIdUrl(string $urlRedirect): void
     {
         if (!isset($_GET["id"]) || !is_numeric($_GET["id"])) {
             header("Location: $urlRedirect");
         }
     }
-    
-    /**
-     * checkFormValues
-     *
-     * @param  array $values
-     * @param  array $formValues
-     * @return bool
-     */
-    protected function checkFormValues(array $values, array $formValues): bool
+
+
+    protected function checkPostValues(array $values): bool
     {
         foreach ($values as $value) {
-            if (!isset($formValues[$value]) || empty($formValues[$value])) {
-                return false;   
+            if (!isset($_POST[$value]) || $_POST[$value] == "") {
+                return false;
             }
         }
 

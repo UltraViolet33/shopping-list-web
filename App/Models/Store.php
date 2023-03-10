@@ -2,86 +2,46 @@
 
 namespace App\Models;
 
-use App\Core\Database\Database;
 
 class Store extends Model
 {
 
-    /**
-     * create
-     *
-     * @param  array $data
-     * @return bool
-     */
     public function create(array $data): bool
     {
         $query = "INSERT INTO $this->table(name) VALUES(:name)";
-        return Database::getInstance()->write($query, $data);
+        return $this->db->write($query, $data);
     }
 
 
-    /**
-     * selectAll
-     *
-     * @return array
-     */
-    public function selectAll(): array
-    {
-        $query = "SELECT * FROM $this->table";
-        return Database::getInstance()->read($query);
-    }
-
-
-    /**
-     * selectOneById
-     *
-     * @param  int $id
-     * @return object
-     */
-    public function selectOneById(int $id): object
-    {
-        $query = "SELECT * FROM $this->table WHERE id_stores = :id_stores";
-        return Database::getInstance()->readOneRow($query, ["id_stores" => $id]);
-    }
-
-
-    /**
-     * update
-     *
-     * @param  array $data
-     * @return bool
-     */
     public function update(array $data): bool
     {
-        $query = "UPDATE stores SET name = :name WHERE id_stores = :id_stores";
-        return Database::getInstance()->write($query, $data);
-    }
-
-    /**
-     * selectStoresByProducts
-     *
-     * @param int $id
-     * @return array|bool
-     */
-    public function selectStoresByProducts(int $id): array|bool
-    {
-        $query = "SELECT $this->table.name FROM $this->table 
-        INNER JOIN products_stores ON $this->table.id_stores = products_stores.id_stores 
-        WHERE products_stores.id_products = :id_products";
-
-        return Database::getInstance()->read($query, ["id_products" => $id]);
+        $query = "UPDATE stores SET name = :name WHERE id_store = :id_store";
+        return $this->db->write($query, $data);
     }
 
 
-    /**
-     * delete
-     *
-     * @param int $id
-     * @return bool
-     */
-    public function delete(int $id): bool
+    public function selectStoresLeftFromProduct(int $idProduct): array
     {
-        $query = "DELETE FROM $this->table WHERE id_stores = :id_stores";
-        return Database::getInstance()->write($query, ["id_stores" => $id]);
+        $productStoresId = $this->getStoresIdFromProduct($idProduct);
+        if (count($productStoresId) == 0) {
+            return $this->selectAll();
+        }
+        $query = "SELECT * FROM stores WHERE id_store NOT IN (" . implode(",", $productStoresId) . ")";
+        return $this->db->read($query);
+    }
+
+
+    public function getStoresIdFromProduct(int $idProduct): array
+    {
+        $query = "SELECT id_store FROM prices WHERE id_product = :id_product";
+        $result = $this->db->read($query, ["id_product" => $idProduct]);
+
+        $idStores = [];
+
+        foreach ($result as $item) {
+            $idStores[] = $item->id_store;
+        }
+
+        return $idStores;
     }
 }

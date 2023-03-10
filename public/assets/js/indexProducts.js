@@ -1,3 +1,14 @@
+const getProducts = () => {
+  fetch("products/all")
+    .then(response => response.json())
+    .then(response => displayProductsHTML(response.products));
+};
+
+const displayProductsHTML = productsHTML => {
+  const tableProducts = document.querySelector("#tableProducts");
+  tableProducts.innerHTML = productsHTML;
+};
+
 const addStock_btns = document.getElementsByClassName("addStockBtn");
 
 function updateStock(element) {
@@ -34,12 +45,13 @@ const postData = (data, path) => {
       "Content-type": "application/json",
     },
     body: JSON.stringify(data),
-  })
-    .then(response => response.json())
-    .then(response => displayProductsHTML(response.products));
+  }).then(response => getProducts());
 };
 
-const displayProductsHTML = productsHTML => {
-  const tableProducts = document.querySelector("#tableProducts");
-  tableProducts.innerHTML = productsHTML;
-};
+window.addEventListener("load", event => {
+  getProducts();
+});
+
+function confirmDelete() {
+  return confirm("Voulez vous vraiment supprimer ce produit ?");
+}

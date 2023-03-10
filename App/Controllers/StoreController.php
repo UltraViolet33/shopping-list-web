@@ -4,102 +4,73 @@ namespace App\Controllers;
 
 use App\Core\Render;
 use App\Core\Helpers\Session;
-use App\Core\Helpers\Format;
 use App\Models\Store;
 
 class StoreController extends Controller
 {
-    /**
-     * index
-     *
-     * @return Render
-     */
-    public function index()
+
+    private Store $storeModel;
+
+
+    public function __construct()
     {
-        $allStores = (new Store())->selectAll();
+        $this->storeModel = new Store();
+    }
+
+
+    public function index(): Render
+    {
+        $allStores = $this->storeModel->selectAll();
         return Render::make("Stores/index", compact('allStores'));
     }
 
 
-    /**
-     * index
-     *
-     * @return Render
-     */
     public function create(): Render
     {
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            if (strlen($_POST['name']) > 0) {
-                $data = ["name" => Format::cleanInput($_POST["name"])];
 
-                if ((new Store())->create($data)) {
-                    Session::init();
-                    Session::setMessage("Magasin créé avec succès !");
-                    header("Location: /stores");
-                    return null;
-                }
-
-                $this->setMsgErrors("Une erreur s'est produite ! <br>");
+            if ($this->checkPostValues(["name"])) {
+                $this->storeModel->create(["name" => $_POST["name"]]);
+                header("Location: /stores");
+                die;
             }
 
-            $this->setMsgErrors("Le nom du magasin doit faire au moins 1 lettre ! <br>");
+            Session::set("error", "Please give a name to the store");
         }
 
-        $errors = $this->getMsgErrors();
-        $this->setMsgErrors(null);
-        return Render::make("Stores/add", compact("errors"));
+        return Render::make("Stores/add");
     }
 
 
     public function update(): Render
     {
-        // if(!isset($_GET["id"]) || !is_numeric($_GET["id"]))
-        // {
-        //     header("Location: /stores");
-        // }
+        $this->checkIdUrl("/stores");
 
-        //select single store
-        $singleStore = (new Store())->selectOneById($_GET["id"]);
+        $singleStore = $this->storeModel->selectOneById($_GET["id"]);
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            if (strlen($_POST["name"]) > 1) {
-                $data = ["id_stores" => $singleStore->id_stores, "name" => Format::cleanInput($_POST["name"])];
 
-                if ((new Store())->update($data)) {
-                    Session::init();
-                    Session::setMessage("Magasin créé avec succès !");
-                    header("Location: /stores");
-                    return null;
-                }
+            if ($this->checkPostValues(["name"])) {
+                $data = ["name" => $_POST["name"], "id_store" => $_GET["id"]];
+                $this->storeModel->update($data);
+                header("Location: /stores");
+                die;
             }
 
-            $this->setMsgErrors("Veuillez remplir tous les champs ! <br>");
+            Session::set("error", "Please give a name to the store");
         }
 
-        $errors = $this->getMsgErrors();
-        $this->setMsgErrors(null);
-        return Render::make("Stores/edit", compact("singleStore", "errors"));
+        return Render::make("Stores/edit", compact("singleStore"));
     }
 
 
-    /**
-     * delete
-     *
-     * @return void
-     */
+
     public function delete(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            if (isset($_POST["id_store"]) && !empty($_POST["id_store"])) {
-
-                $id_store = $_POST["id_store"];
-
-                $storeModel = new Store();
-                $store = $storeModel->selectOneById($id_store);
-                if ($store) {
-                    $storeModel->delete($id_store);
-                }
+            if ($this->checkPostValues(["id_store"])) {
+                $this->storeModel->delete($_POST["id_store"]);
             }
         }
 

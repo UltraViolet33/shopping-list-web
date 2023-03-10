@@ -4,34 +4,26 @@ namespace App\Core;
 
 use App\Core\Helpers\Session;
 
+define('BASE_VIEW_PATH', dirname(__DIR__) . DIRECTORY_SEPARATOR . "\Views" . DIRECTORY_SEPARATOR);
+
+
 class Render
 {
 
     private string $viewPath;
     private ?array $args;
 
-    /**
-     * __construct
-     *
-     * @param  string $viewPath
-     * @param  ?array $args
-     * @return void
-     */
+
     public function __construct(string $viewPath, ?array $args = [])
     {
         $this->viewPath = $viewPath;
         $this->args = $args;
-        $this->addMessageToArgs();
     }
 
 
-    /**
-     * view
-     *
-     * @return string
-     */
     public function view(): string
     {
+        $errors = Session::get("error");
         ob_start();
         extract($this->args);
         require BASE_VIEW_PATH . 'layouts\header.php';
@@ -41,41 +33,14 @@ class Render
     }
 
 
-    /**
-     * make
-     *
-     * @param  string $viewPath
-     * @param  ?array $args
-     * @return static
-     */
     public static function make(string $viewPath, ?array $args = []): static
     {
         return new static($viewPath, $args);
     }
 
 
-    /**
-     * __toString
-     *
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->view();
-    }
-
-
-    /**
-     * addMessageToArgs
-     *
-     * @return void
-     */
-    private function addMessageToArgs(): void
-    {
-        Session::init();
-        $msg = Session::getMessage();
-        if ($msg) {
-            $this->args['msg'] = $msg;
-        }
     }
 }

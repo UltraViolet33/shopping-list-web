@@ -4,40 +4,38 @@ namespace App\Controllers;
 
 use App\Core\Render;
 use App\Models\Product;
+use App\Models\Price;
 use App\Models\Store;
 
 
 class ListController
 {
+    private Product $productModel;
 
-    /**
-     * index
-     *
-     * @return Render
-     */
+    public function __construct()
+    {
+        $this->productModel =  new Product();
+    }
+
     public function index(): Render
     {
-        $productModel = new Product();
-        $productsToBuy = $productModel->selectListProducts();
-        $products = $this->addStoresToProducts($productsToBuy);
-
         return Render::make("List/index");
     }
 
-    /**
-     * getProductList
-     *
-     * @return string
-     */
+
     public function getProductList(): string
     {
-        $productModel = new Product();
-        $productsToBuy = $productModel->selectListProducts();
-
-        $products = $this->addStoresToProducts($productsToBuy);
+        $productsToBuy = $this->productModel->selectListProducts();
+        $recurrentProducts = $this->productModel->selectAllRecurrentProducts();
+        foreach ($recurrentProducts as $product) {
+            $product->number_item = 1;
+        }
+        $products = array_merge($productsToBuy, $recurrentProducts);
+        $products = $this->addStoresToProducts($products);
 
         return json_encode($products);
     }
+    
 
     private function addStoresToProducts(array $products): array
     {
@@ -45,13 +43,17 @@ class ListController
 
         foreach ($products as $product) {
             $data = [];
-            $data["id_products"] = $product->id_products;
+            $data["id_product"] = $product->id_product;
             $product->stores = [];
 
             foreach ($allStores as $store) {
-                $data["id_stores"] = $store->id_stores;
-                $price = (new Product())->selectPriceByStoreAndProduct($data);
-                $product->stores[] = ["idStore" => $store->id_stores, "storeName" => $store->name, "price" => $price];
+                $data["id_store"] = $store->id_store;
+                $price = (new Price())->selectPriceFromProductAndStore($data);
+                if ($price) {
+                    $product->stores[] = ["idStore" => $store->id_store, "storeName" => $store->name, "price" => $price];
+                } else {
+                    $product->stores[] = ["idStore" => $store->id_store, "storeName" => $store->name, "price" => false];
+                }
             }
         }
 

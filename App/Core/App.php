@@ -11,13 +11,7 @@ class App
     private Router $router;
     private array $requestURI;
 
-    /**
-     * __construct
-     *
-     * @param  Router $router
-     * @param  array $requestURI
-     * @return void
-     */
+
     public function __construct(Router $router, array $requestURI)
     {
         $this->router = $router;
@@ -25,11 +19,6 @@ class App
     }
 
 
-    /**
-     * run
-     *
-     * @return void
-     */
     public function run(): void
     {
         try {

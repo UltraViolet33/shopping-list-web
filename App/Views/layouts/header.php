@@ -1,9 +1,3 @@
-<?php
-
-use App\Core\Helpers\Session;
-
-Session::init();
-?>
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -36,7 +30,7 @@ Session::init();
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="/stores">Tous les magasins</a></li>
-                            <li><a class="dropdown-item" href="/stores/add">Créer magasin</a></li>
+                            <li><a class="dropdown-item" href="/store/add">Créer magasin</a></li>
                         </ul>
                     </li>
                 </ul>
