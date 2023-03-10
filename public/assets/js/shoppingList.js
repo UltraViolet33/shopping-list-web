@@ -143,9 +143,9 @@ let list = (function () {
 
       let storeHtml = "";
       for (store of model.stores) {
-        storeHtml += `<p>${store.name} - ${store.amount} € ${
+        storeHtml += `<p>${store.name} - ${store.amount.toFixed(2)} € ${
           store.unknowPrice > 0
-            ? "-" + store.unknowPrice + "unknow products price"
+            ? "-" + store.unknowPrice + " unknow products price"
             : ""
         }</p>`;
       }
