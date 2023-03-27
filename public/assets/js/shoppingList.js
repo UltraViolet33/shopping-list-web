@@ -6,8 +6,7 @@ let list = (function () {
   };
 
   model.initializeProducts = function (products) {
-    const data = products;
-    console.log(products);
+    // const data = products;
     products.forEach(product => (product.isInList = false));
 
     this.data = products;
@@ -35,8 +34,6 @@ let list = (function () {
         }
       }
     }
-
-    console.log(this.cheaperList);
 
     view.maj();
   };
@@ -117,48 +114,32 @@ let list = (function () {
         }
       }
     }
-
-    console.log(this.getAllProductsInList());
     this.calculateCheaperList();
 
     view.maj();
   };
 
   model.calculateCheaperList = function () {
-    this.resetCheaperList()
+    this.resetCheaperList();
     const productsInList = this.getAllProductsInList();
 
     for (const product of productsInList) {
       const cheaperStore = this.getCheaperStorePrice(product);
-      // console.log(cheaperStore);
-      console.log(product);
-      this.addProductToCheaperList(product, cheaperStore)
-      // let store = this.cheaperList.find(
-      //   st => st.name == cheaperStore.storeName
-      // );
-      // store.products.push(product);
-      // store.amount += parseFloat(product)
+      if (cheaperStore) {
+        this.addProductToCheaperList(product, cheaperStore);
+      }
     }
-
-    console.log(this.cheaperList);
   };
 
-  model.addProductToCheaperList = function(product, store){
-
+  model.addProductToCheaperList = function (product, store) {
     let storeCheaperList = this.cheaperList.find(
       st => st.name == store.storeName
     );
 
     storeCheaperList.products.push(product);
 
-    for(const storeProduct of product.stores)
-    {
-      console.log(storeProduct.name);
-      if (storeProduct.storeName == storeCheaperList.name)
-      {
-        console.log(product.number_item);
-        // storeCheaperList.amount += (parseFloat(storeProduct.price.amount) * parseInt(product.number_item))
-
+    for (const storeProduct of product.stores) {
+      if (storeProduct.storeName == storeCheaperList.name) {
         if (product.numberToBuy) {
           storeCheaperList.amount +=
             parseFloat(storeProduct.price.amount) *
@@ -170,21 +151,26 @@ let list = (function () {
         }
       }
     }
-
-  }
+  };
 
   model.getCheaperStorePrice = function (product) {
     let cheaperStore = product.stores[0];
 
     for (const store of product.stores) {
-      if (
-        parseFloat(store.price.amount) < parseFloat(cheaperStore.price.amount)
-      ) {
-        cheaperStore = store;
+      if (store.price) {
+        if (
+          parseFloat(store.price.amount) < parseFloat(cheaperStore.price.amount)
+        ) {
+          cheaperStore = store;
+        }
       }
     }
 
-    return cheaperStore;
+    if (cheaperStore.price) {
+      return cheaperStore;
+    }
+
+    return false;
   };
 
   model.getAllProductsInList = function () {
@@ -195,13 +181,11 @@ let list = (function () {
     maj: function () {
       const tableProducts = document.getElementById("tableProducts");
       const storesDiv = document.getElementById("storesAmount");
-
       const cheaperListDiv = document.getElementById("cheaper-list");
 
       let html = "";
 
       for (product of model.data) {
-        // console.log(product);
         html += `<tr><td><input type="checkbox" onchange="onChange(${
           product.id_product
         })" id="${product.id_product}" ${
@@ -243,11 +227,21 @@ let list = (function () {
       }
 
       tableProducts.innerHTML = html;
-
       storesDiv.innerHTML = storeHtml;
 
-      let cheaperListHtml = "<h3>Liste de courses pour payer moins cher</h3>";
+      let totalCheaperList = 0;
+      for (const store of model.cheaperList) {
+        totalCheaperList += store.amount;
+      }
 
+      let cheaperListHtml = `<h3>Liste de courses pour payer moins cher - ${totalCheaperList.toFixed(2)} €</h3>`;
+      for (const store of model.cheaperList) {
+        cheaperListHtml += `<h4>${store.name} - ${store.amount} € </h4>`;
+
+        for (const product of store.products) {
+          cheaperListHtml += `<p>${product.name}</p>`;
+        }
+      }
       cheaperListDiv.innerHTML = cheaperListHtml;
     },
   };
@@ -255,7 +249,6 @@ let list = (function () {
   return {
     initialize: function () {
       getProducts().then(products => {
-        // console.log(products);
         model.initializeProducts(products);
       });
     },
