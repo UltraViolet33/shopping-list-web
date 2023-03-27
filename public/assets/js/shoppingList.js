@@ -2,6 +2,7 @@ let list = (function () {
   let model = {
     data: [],
     stores: [],
+    cheaperList: [],
   };
 
   model.initializeProducts = function (products) {
@@ -22,10 +23,20 @@ let list = (function () {
             unknowPrice: 0,
           });
         }
+
+        storeEl = this.cheaperList.find(el => el.name == store.storeName);
+        if (!storeEl) {
+          this.cheaperList.push({
+            name: store.storeName,
+            amount: 0,
+            products: [],
+            unknowPrice: 0,
+          });
+        }
       }
     }
 
-    console.log(this.stores);
+    console.log(this.cheaperList);
 
     view.maj();
   };
@@ -75,6 +86,14 @@ let list = (function () {
     });
   };
 
+  model.resetCheaperList = function () {
+    this.cheaperList.forEach(store => {
+      store.amount = 0;
+      store.unknowPrice = 0;
+      store.products = [];
+    });
+  };
+
   model.calculateTotalStores = function () {
     this.resetTotalStores();
     for (const product of this.data) {
@@ -99,13 +118,86 @@ let list = (function () {
       }
     }
 
+    console.log(this.getAllProductsInList());
+    this.calculateCheaperList();
+
     view.maj();
+  };
+
+  model.calculateCheaperList = function () {
+    this.resetCheaperList()
+    const productsInList = this.getAllProductsInList();
+
+    for (const product of productsInList) {
+      const cheaperStore = this.getCheaperStorePrice(product);
+      // console.log(cheaperStore);
+      console.log(product);
+      this.addProductToCheaperList(product, cheaperStore)
+      // let store = this.cheaperList.find(
+      //   st => st.name == cheaperStore.storeName
+      // );
+      // store.products.push(product);
+      // store.amount += parseFloat(product)
+    }
+
+    console.log(this.cheaperList);
+  };
+
+  model.addProductToCheaperList = function(product, store){
+
+    let storeCheaperList = this.cheaperList.find(
+      st => st.name == store.storeName
+    );
+
+    storeCheaperList.products.push(product);
+
+    for(const storeProduct of product.stores)
+    {
+      console.log(storeProduct.name);
+      if (storeProduct.storeName == storeCheaperList.name)
+      {
+        console.log(product.number_item);
+        // storeCheaperList.amount += (parseFloat(storeProduct.price.amount) * parseInt(product.number_item))
+
+        if (product.numberToBuy) {
+          storeCheaperList.amount +=
+            parseFloat(storeProduct.price.amount) *
+            parseInt(product.numberToBuy);
+        } else {
+          storeCheaperList.amount +=
+            parseFloat(storeProduct.price.amount) *
+            parseInt(product.number_item);
+        }
+      }
+    }
+
+  }
+
+  model.getCheaperStorePrice = function (product) {
+    let cheaperStore = product.stores[0];
+
+    for (const store of product.stores) {
+      if (
+        parseFloat(store.price.amount) < parseFloat(cheaperStore.price.amount)
+      ) {
+        cheaperStore = store;
+      }
+    }
+
+    return cheaperStore;
+  };
+
+  model.getAllProductsInList = function () {
+    return this.data.filter(product => product.isInList);
   };
 
   let view = {
     maj: function () {
       const tableProducts = document.getElementById("tableProducts");
       const storesDiv = document.getElementById("storesAmount");
+
+      const cheaperListDiv = document.getElementById("cheaper-list");
+
       let html = "";
 
       for (product of model.data) {
@@ -153,6 +245,10 @@ let list = (function () {
       tableProducts.innerHTML = html;
 
       storesDiv.innerHTML = storeHtml;
+
+      let cheaperListHtml = "<h3>Liste de courses pour payer moins cher</h3>";
+
+      cheaperListDiv.innerHTML = cheaperListHtml;
     },
   };
 
