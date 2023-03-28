@@ -20,6 +20,7 @@
                 </tbody>
             </table>
             <div id="storesAmount"></div>
+            <div id="cheaper-list"></div>
         </div>
         <div class="row justify-content-center my-3">
             <div class="col-10 col-md-6" id="stores">
