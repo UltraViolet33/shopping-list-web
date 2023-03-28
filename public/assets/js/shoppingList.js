@@ -236,7 +236,7 @@ let list = (function () {
 
       let cheaperListHtml = `<h3>Liste de courses pour payer moins cher - ${totalCheaperList.toFixed(2)} €</h3>`;
       for (const store of model.cheaperList) {
-        cheaperListHtml += `<h4>${store.name} - ${store.amount} € </h4>`;
+        cheaperListHtml += `<h4>${store.name} - ${store.amount.toFixed(2)} € </h4>`;
 
         for (const product of store.products) {
           cheaperListHtml += `<p>${product.name}</p>`;
